@@ -78,7 +78,7 @@ ERROR_RECOVERY_CONFIG = {
 MESSAGES = {
     'welcome': """
 ==================================================
-OrderLoader 2.0 - Automatización de SAP
+OrderLoader 2.0 - Automatización de SAP para Órdenes de Venta
 ==================================================
 
 Este sistema automatizará la navegación en SAP
@@ -95,6 +95,7 @@ MEJORAS EN ESTA VERSIÓN:
 - Sistema de recuperación automática de errores
 - Verificación visual mejorada
 - Logs detallados para debugging
+- Enfoque especializado en módulo de ventas
 """,
     
     'success': "✅ Automatización completada exitosamente",

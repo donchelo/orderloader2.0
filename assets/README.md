@@ -8,8 +8,7 @@ Esta carpeta contiene todos los recursos necesarios para el funcionamiento del s
 assets/
 ├── images/                    # 🖼️ Imágenes de referencia para Computer Vision
 │   ├── core/                  # Imágenes principales del sistema
-│   ├── sap/                   # Imágenes específicas de SAP
-│   └── production/            # Imágenes para módulo de producción
+│   └── sap/                   # Imágenes específicas de SAP
 ├── templates/                 # 📄 Templates adicionales (futuro)
 └── configs/                   # ⚙️ Configuraciones adicionales (futuro)
 ```
@@ -26,10 +25,7 @@ assets/
 - `sap_ventas_order_button.png` - Botón de orden de venta
 - `sap_orden_de_ventas_template.png` - Formulario de orden de venta
 
-### Production
-- `sap_produccion_menu.png` - Menú de producción
-- `sap_produccion_crear_button.png` - Botón crear orden
-- `sap_produccion_form.png` - Formulario de producción
+
 
 ## 📝 Notas Importantes
 

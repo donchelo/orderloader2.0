@@ -1,6 +1,6 @@
-# OrderLoader 2.0 - Automatización de SAP
+# OrderLoader 2.0 - Automatización de SAP para Órdenes de Venta
 
-Sistema automatizado para navegación en SAP hasta el formulario de órdenes de venta, con capacidades avanzadas de gestión de escritorio remoto.
+Sistema automatizado especializado para navegación en SAP hasta el formulario de órdenes de venta, con capacidades avanzadas de gestión de escritorio remoto.
 
 ## 🚀 Características Principales
 
@@ -27,8 +27,7 @@ orderLoader2.0/
 ├── assets/                       # 🎨 Recursos del proyecto
 │   └── images/                   # Imágenes de referencia para Computer Vision
 │       ├── core/                 # Imágenes principales
-│       ├── sap/                  # Imágenes de SAP
-│       └── production/           # Imágenes de producción
+│       └── sap/                  # Imágenes de SAP
 ├── main.py                       # Punto de entrada principal
 ├── install.bat                   # Script de instalación
 └── README.md                     # Este archivo

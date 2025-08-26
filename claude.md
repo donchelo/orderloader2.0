@@ -2,12 +2,13 @@
 
 ## 📋 Resumen del Proyecto
 
-**OrderLoader 2.0** es un sistema de automatización avanzado diseñado para navegar automáticamente en SAP hasta el formulario de órdenes de venta. El proyecto utiliza Computer Vision y gestión de escritorio remoto para automatizar procesos repetitivos en SAP.
+**OrderLoader 2.0** es un sistema de automatización especializado diseñado exclusivamente para navegar automáticamente en SAP hasta el formulario de órdenes de venta. El proyecto utiliza Computer Vision y gestión de escritorio remoto para automatizar este proceso específico de ventas en SAP.
 
 ### Propósito Principal
 - Automatizar la navegación en SAP hasta el formulario de órdenes de venta
 - Gestionar conexiones de escritorio remoto de forma robusta
 - Proporcionar un sistema de recuperación automática de errores
+- Enfocarse exclusivamente en el módulo de ventas de SAP
 
 ## 🏗️ Arquitectura del Sistema
 
@@ -68,13 +69,10 @@ assets/images/
 ├── core/                     # Imágenes principales
 │   ├── remote_desktop.png    # Escritorio remoto activo
 │   └── sap_desktop.png       # Interfaz principal de SAP
-├── sap/                      # Elementos de SAP
-│   ├── sap_modulos_menu.png  # Menú de módulos
-│   ├── sap_ventas_order_menu.png  # Menú de órdenes de venta
-│   └── [más elementos...]
-└── production/               # Elementos de producción
-    ├── sap_produccion_menu.png
-    └── [campos de formularios...]
+└── sap/                      # Elementos de SAP
+    ├── sap_modulos_menu.png  # Menú de módulos
+    ├── sap_ventas_order_menu.png  # Menú de órdenes de venta
+    └── [más elementos...]
 ```
 
 ### Imágenes Críticas (REQUIRED_IMAGES)
@@ -165,7 +163,6 @@ El sistema verifica automáticamente que todas las imágenes de referencia esté
 - **Recuperación Robusta**: Múltiples estrategias de fallback
 
 ### Extensiones Posibles
-- Nuevos módulos de SAP (producción, inventario, etc.)
 - Soporte para múltiples servidores remotos
 - Integración con APIs externas
 - Interfaz gráfica de usuario
