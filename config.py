@@ -11,6 +11,27 @@ RECOGNITION_CONFIG = {
     'pause': 0.5,       # Pausa entre acciones
 }
 
+# Configuración específica del escritorio remoto
+REMOTE_DESKTOP_CONFIG = {
+    'window_title': "20.96.6.64 - Conexión a Escritorio remoto",
+    'ip_address': "20.96.6.64",
+    'max_attempts': 3,
+    'retry_delay': 5,
+    'activation_timeout': 10,
+    'maximization_timeout': 3,
+    'visual_verification_timeout': 5,
+}
+
+# Configuración de estrategias de activación
+ACTIVATION_STRATEGIES = {
+    'alt_tab_attempts': 10,
+    'alt_tab_delay': 0.3,
+    'powershell_timeout': 2,
+    'win_tab_delay': 1,
+    'click_delay': 0.5,
+    'new_connection_timeout': 3,
+}
+
 # Configuración de imágenes de referencia
 REQUIRED_IMAGES = [
     "remote_desktop.png",
@@ -23,9 +44,13 @@ REQUIRED_IMAGES = [
 
 # Configuración de atajos de teclado
 KEYBOARD_SHORTCUTS = {
-    'maximize_window': ['win', 'm'],
+    'maximize_window': ['win', 'up'],
+    'maximize_alt_space': ['alt', 'space'],
+    'maximize_x': 'x',
     'open_modules': ['alt', 'm'],
     'navigate_sales': 'v',
+    'alt_tab': ['alt', 'tab'],
+    'win_tab': ['win', 'tab'],
 }
 
 # Configuración de logging
@@ -39,6 +64,14 @@ LOGGING_CONFIG = {
 SECURITY_CONFIG = {
     'failsafe': True,  # Activar failsafe de pyautogui
     'pause_between_actions': 0.5,
+}
+
+# Configuración de recuperación de errores
+ERROR_RECOVERY_CONFIG = {
+    'max_retries': 3,
+    'retry_delay': 5,
+    'exponential_backoff': True,
+    'backoff_multiplier': 2,
 }
 
 # Mensajes del sistema
@@ -56,10 +89,18 @@ IMPORTANTE:
 - El sistema primero activará la ventana del escritorio remoto
 - No muevas el mouse durante la automatización
 - Para detener: mueve el mouse a la esquina superior izquierda
+
+MEJORAS EN ESTA VERSIÓN:
+- Múltiples estrategias de activación del escritorio remoto
+- Sistema de recuperación automática de errores
+- Verificación visual mejorada
+- Logs detallados para debugging
 """,
     
     'success': "✅ Automatización completada exitosamente",
     'error': "❌ La automatización falló",
     'check_log': "Revisa el archivo 'orderloader.log' para más detalles",
-    'ready': "El formulario de orden de venta está listo para uso"
+    'ready': "El formulario de orden de venta está listo para uso",
+    'remote_desktop_success': "✅ Escritorio remoto activado correctamente",
+    'remote_desktop_error': "❌ Error al activar el escritorio remoto",
 }
