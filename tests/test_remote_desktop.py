@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Test Final - Escritorio Remoto Corregido
+Test Unificado - Escritorio Remoto
+Prueba todas las funcionalidades del escritorio remoto
 """
 
 import sys
 import time
 import subprocess
 import json
+from pathlib import Path
 
-def test_corrected_remote_desktop_manager():
-    """Prueba el RemoteDesktopManager corregido"""
-    print("🔧 Probando RemoteDesktopManager corregido...")
+# Agregar el directorio raíz al path para importar módulos
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+def test_remote_desktop_manager():
+    """Prueba el RemoteDesktopManager completo"""
+    print("🔧 Probando RemoteDesktopManager...")
     
     try:
-        from main import RemoteDesktopManager
+        from src.core.remote_desktop_manager import RemoteDesktopManager
         manager = RemoteDesktopManager()
         
         # Prueba 1: Buscar ventana
@@ -26,13 +31,13 @@ def test_corrected_remote_desktop_manager():
             print(f"   Proceso: {window_info['ProcessName']}")
             print(f"   ID: {window_info['Id']}")
             
-            # Prueba 2: Obtener ventana activa (método corregido)
-            print("\n2️⃣ Obteniendo ventana activa (método corregido)...")
+            # Prueba 2: Obtener ventana activa
+            print("\n2️⃣ Obteniendo ventana activa...")
             active_title = manager.get_active_window_title()
             print(f"✅ Ventana activa: {active_title}")
             
             # Prueba 3: Activar ventana
-            print("\n3️⃣ Probando activación corregida...")
+            print("\n3️⃣ Probando activación...")
             print("¿Deseas probar la activación? (s/n): ", end="")
             response = input().lower().strip()
             
@@ -69,20 +74,17 @@ def test_corrected_remote_desktop_manager():
         print(f"❌ Error en RemoteDesktopManager: {e}")
         return False
 
-def test_sap_automation_complete():
+def test_sap_automation():
     """Prueba la automatización completa de SAP"""
     print("\n🔧 Probando automatización completa de SAP...")
     
     try:
-        from main import SAPAutomation
+        from src.core.sap_automation import SAPAutomation
         automation = SAPAutomation()
         
         # Verificar imágenes de referencia
         print("\n🔍 Verificando imágenes de referencia...")
-        missing_images = []
-        for image in ["remote_desktop.png", "sap_desktop.png"]:
-            if not (automation.reference_path / image).exists():
-                missing_images.append(image)
+        missing_images = automation.verify_required_images()
         
         if missing_images:
             print(f"❌ Faltan imágenes: {missing_images}")
@@ -212,13 +214,13 @@ def test_quick_activation():
         return False
 
 def main():
-    """Función principal de prueba final"""
+    """Función principal de prueba"""
     print("=" * 60)
-    print("TEST FINAL - ESCRITORIO REMOTO CORREGIDO")
+    print("TEST UNIFICADO - ESCRITORIO REMOTO")
     print("=" * 60)
     
-    print("\nEste test verificará que las correcciones implementadas funcionen:")
-    print("1. RemoteDesktopManager corregido")
+    print("\nEste test verificará todas las funcionalidades:")
+    print("1. RemoteDesktopManager")
     print("2. Automatización completa de SAP")
     print("3. Activación rápida")
     
@@ -227,18 +229,18 @@ def main():
     
     results = []
     
-    # Prueba 1: RemoteDesktopManager corregido
+    # Prueba 1: RemoteDesktopManager
     print("\n" + "="*40)
-    print("PRUEBA 1: REMOTE DESKTOP MANAGER CORREGIDO")
+    print("PRUEBA 1: REMOTE DESKTOP MANAGER")
     print("="*40)
-    result1 = test_corrected_remote_desktop_manager()
-    results.append(("RemoteDesktopManager Corregido", result1))
+    result1 = test_remote_desktop_manager()
+    results.append(("RemoteDesktopManager", result1))
     
     # Prueba 2: Automatización completa
     print("\n" + "="*40)
     print("PRUEBA 2: AUTOMATIZACIÓN COMPLETA")
     print("="*40)
-    result2 = test_sap_automation_complete()
+    result2 = test_sap_automation()
     results.append(("Automatización Completa", result2))
     
     # Prueba 3: Activación rápida
@@ -250,7 +252,7 @@ def main():
     
     # Resumen de resultados
     print("\n" + "="*60)
-    print("RESUMEN DE RESULTADOS FINALES")
+    print("RESUMEN DE RESULTADOS")
     print("="*60)
     
     for test_name, result in results:
