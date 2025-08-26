@@ -74,6 +74,13 @@ ERROR_RECOVERY_CONFIG = {
     'backoff_multiplier': 2,
 }
 
+# Configuración de colas
+QUEUE_CONFIG = {
+    'supported_formats': ['.pdf', '.png', '.jpg', '.jpeg', '.txt'],
+    'auto_process': True,  # Procesar automáticamente al iniciar
+    'show_status': True,   # Mostrar estado de colas
+}
+
 # Mensajes del sistema
 MESSAGES = {
     'welcome': """
@@ -84,13 +91,20 @@ OrderLoader 2.0 - Automatización de SAP para Órdenes de Venta
 Este sistema automatizará la navegación en SAP
 hasta el formulario de órdenes de venta.
 
+SISTEMA DE COLAS:
+- Coloca archivos en 'queues/pending/' para procesamiento
+- Los archivos se procesan en orden FIFO (primero en llegar, primero en procesar)
+- Los archivos procesados se mueven a 'queues/completed/'
+
 IMPORTANTE:
 - Asegúrate de que el escritorio remoto esté abierto y conectado a SAP
-- El sistema primero activará la ventana del escritorio remoto
+- El sistema procesará automáticamente todos los archivos en la cola
 - No muevas el mouse durante la automatización
 - Para detener: mueve el mouse a la esquina superior izquierda
 
 MEJORAS EN ESTA VERSIÓN:
+- Sistema de colas simple y eficiente
+- Procesamiento secuencial automático
 - Múltiples estrategias de activación del escritorio remoto
 - Sistema de recuperación automática de errores
 - Verificación visual mejorada
@@ -98,8 +112,8 @@ MEJORAS EN ESTA VERSIÓN:
 - Enfoque especializado en módulo de ventas
 """,
     
-    'success': "✅ Automatización completada exitosamente",
-    'error': "❌ La automatización falló",
+    'success': "✅ Procesamiento completado exitosamente",
+    'error': "❌ El procesamiento falló",
     'check_log': "Revisa el archivo 'orderloader.log' para más detalles",
     'ready': "El formulario de orden de venta está listo para uso",
     'remote_desktop_success': "✅ Escritorio remoto activado correctamente",

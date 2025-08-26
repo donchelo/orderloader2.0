@@ -52,16 +52,19 @@ def main():
     print("Imágenes de referencia verificadas correctamente")
     print()
     
+    # Mostrar estado de colas
+    automation.queue_manager.print_queue_status()
+    
     # Confirmar inicio
-    input("Presiona Enter para iniciar la automatización...")
+    input("Presiona Enter para iniciar el procesamiento de la cola...")
     print()
     
-    # Ejecutar automatización
-    success = automation.run_automation()
+    # Procesar cola completa
+    success = automation.process_queue()
     
     if success:
         print(f"\n{MESSAGES['success']}")
-        print(MESSAGES['ready'])
+        print("🎉 Procesamiento de cola completado")
     else:
         print(f"\n{MESSAGES['error']}")
         print(MESSAGES['check_log'])

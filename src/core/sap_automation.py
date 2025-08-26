@@ -13,6 +13,7 @@ import pyautogui
 
 from .remote_desktop_manager import RemoteDesktopManager
 from .image_recognition import ImageRecognition
+from .queue_manager import QueueManager
 from ..config import (RECOGNITION_CONFIG, REQUIRED_IMAGES, KEYBOARD_SHORTCUTS, 
                      SECURITY_CONFIG, REMOTE_DESKTOP_CONFIG)
 
@@ -27,6 +28,7 @@ class SAPAutomation:
         self.timeout = RECOGNITION_CONFIG['timeout']
         self.remote_manager = RemoteDesktopManager()
         self.image_recognition = ImageRecognition(self.reference_path)
+        self.queue_manager = QueueManager()  # Nuevo: gestor de colas
         
         # Configurar pyautogui
         pyautogui.FAILSAFE = SECURITY_CONFIG['failsafe']
@@ -215,4 +217,73 @@ class SAPAutomation:
             
         except Exception as e:
             logger.error(f"Error durante la automatización: {e}")
+            return False
+
+    def process_queue(self) -> bool:
+        """
+        Procesa todos los archivos en la cola de forma secuencial
+        """
+        logger.info("🚀 Iniciando procesamiento de cola...")
+        
+        # Verificar si hay archivos pendientes
+        if not self.queue_manager.has_pending_files():
+            logger.info("📭 No hay archivos pendientes en la cola")
+            return True
+        
+        # Mostrar estado inicial
+        self.queue_manager.print_queue_status()
+        
+        # Procesar archivos uno por uno
+        while self.queue_manager.has_pending_files():
+            next_file = self.queue_manager.get_next_file()
+            if not next_file:
+                break
+            
+            logger.info(f"🔄 Procesando archivo: {next_file.name}")
+            
+            try:
+                # Procesar el archivo individual
+                success = self.process_single_file(next_file)
+                
+                if success:
+                    # Mover a completados
+                    if self.queue_manager.move_to_completed(next_file):
+                        logger.info(f"✅ Archivo procesado exitosamente: {next_file.name}")
+                    else:
+                        logger.error(f"❌ Error al mover archivo completado: {next_file.name}")
+                else:
+                    logger.error(f"❌ Error al procesar archivo: {next_file.name}")
+                    # Por ahora, dejamos el archivo en pending para revisión manual
+                    # En el futuro podríamos agregar una carpeta 'failed'
+                
+            except Exception as e:
+                logger.error(f"❌ Excepción al procesar {next_file.name}: {e}")
+                # El archivo permanece en pending para revisión manual
+        
+        # Mostrar estado final
+        self.queue_manager.print_queue_status()
+        logger.info("🏁 Procesamiento de cola completado")
+        return True
+    
+    def process_single_file(self, file_path: Path) -> bool:
+        """
+        Procesa un archivo individual
+        Por ahora ejecuta la automatización completa de SAP
+        En el futuro se puede personalizar según el tipo de archivo
+        """
+        logger.info(f"🔄 Iniciando procesamiento de: {file_path.name}")
+        
+        try:
+            # Ejecutar la automatización completa de SAP
+            success = self.run_automation()
+            
+            if success:
+                logger.info(f"✅ Automatización completada para: {file_path.name}")
+                return True
+            else:
+                logger.error(f"❌ Automatización falló para: {file_path.name}")
+                return False
+                
+        except Exception as e:
+            logger.error(f"❌ Error en automatización para {file_path.name}: {e}")
             return False
