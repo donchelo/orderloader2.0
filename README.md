@@ -24,7 +24,11 @@ orderLoader2.0/
 │   └── config.py                 # Configuración centralizada
 ├── tests/                        # Tests del sistema
 │   └── test_remote_desktop.py    # Test unificado
-├── reference_images/             # Imágenes de referencia
+├── assets/                       # 🎨 Recursos del proyecto
+│   └── images/                   # Imágenes de referencia para Computer Vision
+│       ├── core/                 # Imágenes principales
+│       ├── sap/                  # Imágenes de SAP
+│       └── production/           # Imágenes de producción
 ├── main.py                       # Punto de entrada principal
 ├── install.bat                   # Script de instalación
 └── README.md                     # Este archivo

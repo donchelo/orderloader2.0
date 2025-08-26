@@ -46,7 +46,7 @@ def main():
         print("Error: Faltan las siguientes imágenes de referencia:")
         for image in missing_images:
             print(f"  - {image}")
-        print("\nAsegúrate de que todas las imágenes estén en la carpeta 'reference_images'")
+        print("\nAsegúrate de que todas las imágenes estén en la carpeta 'assets/images'")
         return
     
     print("Imágenes de referencia verificadas correctamente")

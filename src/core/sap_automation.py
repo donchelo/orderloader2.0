@@ -22,7 +22,7 @@ class SAPAutomation:
     """Clase principal para automatización de SAP"""
     
     def __init__(self, reference_path: Path = None):
-        self.reference_path = reference_path or Path("reference_images")
+        self.reference_path = reference_path or Path("assets/images")
         self.confidence = RECOGNITION_CONFIG['confidence']
         self.timeout = RECOGNITION_CONFIG['timeout']
         self.remote_manager = RemoteDesktopManager()
@@ -81,7 +81,7 @@ class SAPAutomation:
         logger.info("🔍 Verificando escritorio remoto visualmente...")
         
         # Buscar imagen de referencia del escritorio remoto
-        if self.image_recognition.wait_for_image("remote_desktop.png", 
+        if self.image_recognition.wait_for_image("core/remote_desktop.png", 
                                                timeout=REMOTE_DESKTOP_CONFIG['visual_verification_timeout']):
             logger.info("✅ Escritorio remoto verificado visualmente")
             return True
@@ -92,7 +92,7 @@ class SAPAutomation:
     def verify_sap_desktop(self) -> bool:
         """Verifica que estamos en SAP Desktop"""
         logger.info("Verificando SAP Desktop...")
-        if self.image_recognition.wait_for_image("sap_desktop.png"):
+        if self.image_recognition.wait_for_image("core/sap_desktop.png"):
             logger.info("SAP Desktop detectado correctamente")
             return True
         logger.error("SAP Desktop no detectado")
@@ -117,7 +117,7 @@ class SAPAutomation:
             time.sleep(1)
             
             # Verificar que el menú se abrió
-            if self.image_recognition.wait_for_image("sap_modulos_menu.png"):
+            if self.image_recognition.wait_for_image("sap/sap_modulos_menu.png"):
                 logger.info("Menú de módulos abierto correctamente")
                 return True
             return False
@@ -133,7 +133,7 @@ class SAPAutomation:
             time.sleep(1)
             
             # Verificar que estamos en el menú de ventas
-            if self.image_recognition.wait_for_image("sap_ventas_order_menu.png"):
+            if self.image_recognition.wait_for_image("sap/sap_ventas_order_menu.png"):
                 logger.info("Menú de ventas abierto correctamente")
                 return True
             return False
@@ -144,7 +144,7 @@ class SAPAutomation:
     def open_sales_order(self) -> bool:
         """Abre la orden de venta"""
         logger.info("Abriendo orden de venta...")
-        if self.image_recognition.click_image("sap_ventas_order_button.png"):
+        if self.image_recognition.click_image("sap/sap_ventas_order_button.png"):
             time.sleep(2)
             return True
         return False
@@ -152,7 +152,7 @@ class SAPAutomation:
     def verify_sales_order_form(self) -> bool:
         """Verifica que estamos en el formulario de orden de venta"""
         logger.info("Verificando formulario de orden de venta...")
-        if self.image_recognition.wait_for_image("sap_orden_de_ventas_template.png"):
+        if self.image_recognition.wait_for_image("sap/sap_orden_de_ventas_template.png"):
             logger.info("Formulario de orden de venta abierto correctamente")
             return True
         logger.error("Formulario de orden de venta no detectado")

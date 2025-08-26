@@ -34,12 +34,12 @@ ACTIVATION_STRATEGIES = {
 
 # Configuración de imágenes de referencia
 REQUIRED_IMAGES = [
-    "remote_desktop.png",
-    "sap_desktop.png", 
-    "sap_modulos_menu.png",
-    "sap_ventas_order_menu.png",
-    "sap_ventas_order_button.png",
-    "sap_orden_de_ventas_template.png"
+    "core/remote_desktop.png",
+    "core/sap_desktop.png", 
+    "sap/sap_modulos_menu.png",
+    "sap/sap_ventas_order_menu.png",
+    "sap/sap_ventas_order_button.png",
+    "sap/sap_orden_de_ventas_template.png"
 ]
 
 # Configuración de atajos de teclado

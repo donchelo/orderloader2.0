@@ -20,7 +20,7 @@ class ImageRecognition:
     """Clase para manejo de reconocimiento de imágenes"""
     
     def __init__(self, reference_path: Path = None):
-        self.reference_path = reference_path or Path("reference_images")
+        self.reference_path = reference_path or Path("assets/images")
         self.confidence = RECOGNITION_CONFIG['confidence']
         self.timeout = RECOGNITION_CONFIG['timeout']
         
