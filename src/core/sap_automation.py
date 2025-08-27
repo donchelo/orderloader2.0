@@ -121,57 +121,129 @@ class SAPAutomation:
             return False
     
     def open_modules_menu(self) -> bool:
-        """Abre el menú de módulos usando Alt+M"""
-        logger.info("⌨️ Presionando Alt+M para abrir menú de módulos...")
+        """Abre el menú de módulos haciendo clic en el botón"""
+        logger.info("🖱️ Haciendo clic en botón de módulos...")
         try:
-            pyautogui.hotkey(*KEYBOARD_SHORTCUTS['open_modules'])
-            time.sleep(1)
-            
-            # Verificar que el menú se abrió
-            if self.image_recognition.wait_for_image("sap/sap_modulos_menu.png"):
-                logger.info("✅ Menú de módulos abierto correctamente con Alt+M")
-                return True
-            logger.warning("⚠️ Menú de módulos no detectado visualmente, pero continuando...")
-            return True  # Continuamos aunque no detectemos visualmente
+            if self.image_recognition.click_image("sap/sap_modulos_menu_button.png"):
+                time.sleep(2)  # Esperar a que aparezca el menú
+                logger.info("✅ Clic en botón de módulos exitoso")
+                
+                # Verificar que el menú se abrió
+                if self.image_recognition.find_image_on_screen("sap/sap_modulos_menu.png"):
+                    logger.info("✅ Menú de módulos detectado visualmente")
+                    return True
+                else:
+                    logger.warning("⚠️ Menú de módulos no detectado visualmente, pero continuando...")
+                    return True  # Continuamos aunque no detectemos visualmente
+            else:
+                logger.error("❌ No se pudo hacer clic en el botón de módulos")
+                return False
         except Exception as e:
-            logger.error(f"❌ Error abriendo menú de módulos con Alt+M: {e}")
+            logger.error(f"❌ Error haciendo clic en botón de módulos: {e}")
             return False
     
     def navigate_to_sales(self) -> bool:
-        """Navega a la sección de ventas usando la tecla V"""
-        logger.info("⌨️ Presionando V para navegar a ventas...")
+        """Navega a la sección de ventas haciendo clic en el botón de ventas"""
+        logger.info("🖱️ Haciendo clic en botón de ventas...")
         try:
-            pyautogui.press(KEYBOARD_SHORTCUTS['navigate_sales'])
-            time.sleep(1)
+            # Buscar el elemento de ventas en el menú
+            ventas_elements = [
+                "sap/sap_ventas_menu_button.png",
+                "sap/sap_ventas_clientes_menu.png"
+            ]
+            
+            ventas_clicked = False
+            for element in ventas_elements:
+                logger.info(f"🔍 Buscando: {element}")
+                if self.image_recognition.click_image(element):
+                    logger.info(f"✅ Clic exitoso en: {element}")
+                    ventas_clicked = True
+                    time.sleep(2)  # Esperar a que aparezca el menú de ventas
+                    break
+            
+            if not ventas_clicked:
+                logger.warning("⚠️ No se pudo hacer clic en ventas, intentando atajo de teclado...")
+                # Intentar usar atajo de teclado V como respaldo
+                pyautogui.press(KEYBOARD_SHORTCUTS['navigate_sales'])
+                time.sleep(2)
             
             # Verificar que estamos en el menú de ventas
-            if self.image_recognition.wait_for_image("sap/sap_ventas_order_menu.png"):
-                logger.info("✅ Menú de ventas abierto correctamente con V")
-                return True
+            ventas_menu_elements = [
+                "sap/sap_ventas_order_menu.png",
+                "sap/sap_ventas_clientes_menu.png"
+            ]
+            
+            for element in ventas_menu_elements:
+                if self.image_recognition.find_image_on_screen(element):
+                    logger.info(f"✅ Menú de ventas detectado: {element}")
+                    return True
+            
             logger.warning("⚠️ Menú de ventas no detectado visualmente, pero continuando...")
             return True  # Continuamos aunque no detectemos visualmente
+            
         except Exception as e:
-            logger.error(f"❌ Error navegando a ventas con V: {e}")
+            logger.error(f"❌ Error navegando a ventas: {e}")
             return False
     
     def open_sales_order(self) -> bool:
         """Busca y hace clic en el botón de órdenes de venta"""
-        logger.info("🔍 Buscando botón de órdenes de venta...")
-        if self.image_recognition.click_image("sap/sap_ventas_order_button.png"):
-            time.sleep(2)
-            logger.info("✅ Botón de órdenes de venta encontrado y clickeado")
-            return True
-        logger.error("❌ No se pudo encontrar el botón de órdenes de venta")
-        return False
+        logger.info("🖱️ Haciendo clic en órdenes de venta...")
+        try:
+            if self.image_recognition.click_image("sap/sap_ventas_order_button.png"):
+                time.sleep(3)  # Esperar a que se abra el formulario
+                logger.info("✅ Clic en órdenes de venta exitoso")
+                return True
+            else:
+                logger.warning("⚠️ No se pudo hacer clic en órdenes de venta, buscando alternativas...")
+                
+                # Buscar otros elementos relacionados con órdenes
+                order_elements = [
+                    "sap/sap_ventas_order_menu.png",
+                    "sap/sap_ventas_clientes_menu.png"
+                ]
+                
+                for element in order_elements:
+                    if self.image_recognition.click_image(element):
+                        logger.info(f"✅ Clic alternativo exitoso en: {element}")
+                        time.sleep(3)
+                        return True
+                
+                logger.error("❌ No se pudo encontrar ningún botón de órdenes de venta")
+                return False
+        except Exception as e:
+            logger.error(f"❌ Error haciendo clic en órdenes de venta: {e}")
+            return False
     
     def verify_sales_order_form(self) -> bool:
         """Verifica que estamos en el formulario de orden de venta"""
-        logger.info("Verificando formulario de orden de venta...")
-        if self.image_recognition.wait_for_image("sap/sap_orden_de_ventas_template.png"):
-            logger.info("Formulario de orden de venta abierto correctamente")
+        logger.info("🔍 Verificando formulario de orden de venta...")
+        
+        # Estrategia 1: Buscar el template principal
+        if self.image_recognition.find_image_on_screen("sap/sap_orden_de_ventas_template.png"):
+            logger.info("✅ Formulario de orden de venta detectado")
             return True
-        logger.error("Formulario de orden de venta no detectado")
-        return False
+        
+        # Estrategia 2: Buscar elementos alternativos del formulario
+        logger.info("🔍 Buscando elementos alternativos del formulario...")
+        form_elements = [
+            "sap/sap_ventas_order_menu.png",
+            "sap/sap_ventas_clientes_menu.png",
+            "sap/sap_ventas_order_button.png"
+        ]
+        
+        for element in form_elements:
+            if self.image_recognition.find_image_on_screen(element):
+                logger.info(f"✅ Elemento de formulario detectado: {element}")
+                return True
+        
+        # Estrategia 3: Usar búsqueda robusta
+        logger.info("🔍 Probando búsqueda robusta...")
+        if self.image_recognition.find_image_robust("sap/sap_orden_de_ventas_template.png", [0.7, 0.6, 0.5]):
+            logger.info("✅ Formulario detectado con búsqueda robusta")
+            return True
+        
+        logger.warning("⚠️ Formulario de orden de venta no detectado, pero continuando...")
+        return True  # Continuamos aunque no detectemos el formulario específico
     
     def verify_required_images(self) -> list:
         """
@@ -189,7 +261,7 @@ class SAPAutomation:
     def run_automation(self) -> bool:
         """
         Ejecuta el proceso completo de automatización
-        Workflow optimizado: Escritorio Remoto → SAP Desktop (ya abierto) → Alt+M → V → Botón Órdenes
+        Workflow optimizado: Escritorio Remoto → SAP Desktop (ya abierto) → Clic Módulos → Clic Ventas → Clic Órdenes
         """
         logger.info("🚀 Iniciando automatización de SAP...")
         
@@ -211,20 +283,24 @@ class SAPAutomation:
             if not self.remote_manager.maximize_window_advanced():
                 logger.warning("⚠️ No se pudo maximizar la ventana, pero continuando...")
             
-            # Paso 4: Presionar Alt+M para abrir menú de módulos
-            logger.info("📍 Paso 4: Abriendo menú de módulos (Alt+M)...")
+            # Pausa para estabilizar
+            logger.info("⏳ Esperando 3 segundos para estabilizar...")
+            time.sleep(3)
+            
+            # Paso 4: Hacer clic en botón de módulos
+            logger.info("📍 Paso 4: Haciendo clic en botón de módulos...")
             if not self.open_modules_menu():
                 logger.error("❌ No se pudo abrir el menú de módulos")
                 return False
             
-            # Paso 5: Presionar V para navegar a ventas
-            logger.info("📍 Paso 5: Navegando a ventas (V)...")
+            # Paso 5: Hacer clic en ventas
+            logger.info("📍 Paso 5: Haciendo clic en ventas...")
             if not self.navigate_to_sales():
                 logger.error("❌ No se pudo navegar a ventas")
                 return False
             
-            # Paso 6: Buscar y hacer clic en el botón de órdenes de venta
-            logger.info("📍 Paso 6: Buscando botón de órdenes de venta...")
+            # Paso 6: Hacer clic en órdenes de venta
+            logger.info("📍 Paso 6: Haciendo clic en órdenes de venta...")
             if not self.open_sales_order():
                 logger.error("❌ No se pudo abrir la orden de venta")
                 return False
