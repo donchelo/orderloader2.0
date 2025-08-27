@@ -52,11 +52,11 @@ src/
 - Confirma que SAP Desktop esté visible en el escritorio remoto
 - Busca la imagen de referencia `core/sap_desktop.png`
 
-### 3. **Navegación en SAP**
+### 3. **Navegación en SAP (Estrategia Optimizada)**
 - **Maximiza** la ventana del escritorio remoto
-- **Alt+M**: Abre el menú de módulos
-- **V**: Navega al módulo de ventas
-- **Busca y hace clic** en el botón de órdenes de venta (`sap_ventas_order_button.png`)
+- **Clic en botón de módulos**: Abre el menú de módulos (`sap_modulos_menu_button.png`)
+- **Clic en ventas**: Navega al módulo de ventas (`sap_ventas_menu_button.png`)
+- **Clic en órdenes**: Accede al formulario de órdenes de venta (`sap_ventas_order_button.png`)
 - Verifica que el formulario de órdenes esté abierto
 
 ### 4. **Procesamiento de Cola**
@@ -124,23 +124,30 @@ assets/images/
 
 ## 🚀 Uso del Sistema
 
-### Ejecución Principal
+### Ejecución Principal (Sistema Simplificado - RECOMENDADO)
+```bash
+python main_simplified.py
+```
+
+### Ejecución del Sistema Completo
 ```bash
 python main.py
 ```
 
-### Test del Workflow
+### Tests Disponibles
 ```bash
-python test_workflow.py
+python test_click_based_navigation.py
+python test_sap_current_state.py
+python test_final_automation.py
 ```
 
-### Workflow Detallado
+### Workflow Detallado (Estrategia Optimizada)
 1. **Preparación**: Coloca archivos JSON en `queues/pending/`
 2. **Ejecución**: El sistema ejecuta automáticamente:
    - Conecta al escritorio remoto (20.96.6.64)
    - Verifica SAP Desktop
    - Maximiza ventana
-   - Alt+M → V → Botón órdenes
+   - **Clic en botón de módulos** → **Clic en ventas** → **Clic en órdenes**
    - Procesa archivos JSON de la cola
 
 ### Verificación de Imágenes
@@ -166,10 +173,20 @@ El sistema verifica automáticamente que todas las imágenes de referencia esté
 
 ## 🧪 Testing
 
-### Test Unificado (`tests/test_remote_desktop.py`)
-- Prueba la gestión del escritorio remoto
-- Verifica la automatización completa
-- Pruebas de rendimiento y activación rápida
+### Tests Disponibles
+- **`test_click_based_navigation.py`**: Test de navegación por clics (funcionando al 100%)
+- **`test_sap_current_state.py`**: Diagnóstico del estado actual de SAP
+- **`test_final_automation.py`**: Test final del sistema principal
+- **`tests/test_remote_desktop.py`**: Test unificado del escritorio remoto
+
+### Estrategia de Navegación Probada
+La navegación por clics ha sido probada exitosamente y funciona perfectamente:
+- ✅ Activación de ventana del escritorio remoto
+- ✅ Maximización de ventana
+- ✅ Clic en botón de módulos
+- ✅ Clic en ventas
+- ✅ Clic en órdenes de venta
+- ✅ Navegación completada exitosamente
 
 ## 📝 Consideraciones para Agentes Futuros
 
@@ -189,6 +206,8 @@ El sistema verifica automáticamente que todas las imágenes de referencia esté
 - Soporte para múltiples servidores remotos
 - Integración con APIs externas
 - Interfaz gráfica de usuario
+- Procesamiento de archivos JSON de la cola
+- Automatización completa del formulario de órdenes de venta
 
 ## 🐛 Troubleshooting Común
 

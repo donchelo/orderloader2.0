@@ -20,9 +20,11 @@ assets/
 - `sap_desktop.png` - Interfaz principal de SAP
 
 ### SAP
+- `sap_modulos_menu_button.png` - Botón de módulos (navegación por clics)
 - `sap_modulos_menu.png` - Menú de módulos
+- `sap_ventas_menu_button.png` - Botón de ventas (navegación por clics)
 - `sap_ventas_order_menu.png` - Menú de órdenes de venta
-- `sap_ventas_order_button.png` - Botón de orden de venta
+- `sap_ventas_order_button.png` - Botón de orden de venta (navegación por clics)
 - `sap_orden_de_ventas_template.png` - Formulario de orden de venta
 
 
@@ -33,6 +35,7 @@ assets/
 2. **Resolución**: Mantener la resolución original de captura
 3. **Nombres**: Usar nombres descriptivos y consistentes
 4. **Versiones**: Las imágenes con "old_" son versiones anteriores
+5. **Navegación por Clics**: Las imágenes con "_button" son para navegación por clics (funcionando al 100%)
 
 ## 🔄 Mantenimiento
 

@@ -1,10 +1,11 @@
 # OrderLoader 2.0 - Automatización de SAP para Órdenes de Venta
 
-Sistema automatizado especializado para navegación en SAP hasta el formulario de órdenes de venta, con capacidades avanzadas de gestión de escritorio remoto.
+Sistema automatizado especializado para navegación en SAP hasta el formulario de órdenes de venta, con capacidades avanzadas de gestión de escritorio remoto y navegación por clics optimizada.
 
 ## 🚀 Características Principales
 
 - **Gestión Avanzada de Escritorio Remoto**: Múltiples estrategias de activación y maximización de ventanas
+- **Navegación por Clics Optimizada**: Estrategia probada y funcionando para navegación en SAP
 - **Reconocimiento de Imágenes**: Detección robusta de elementos en pantalla usando OpenCV
 - **Sistema de Recuperación**: Manejo automático de errores con reintentos inteligentes
 - **Logging Detallado**: Registro completo de todas las operaciones para debugging
@@ -29,6 +30,7 @@ orderLoader2.0/
 │       ├── core/                 # Imágenes principales
 │       └── sap/                  # Imágenes de SAP
 ├── main.py                       # Punto de entrada principal
+├── main_simplified.py            # Sistema simplificado (funcionando)
 ├── install.bat                   # Script de instalación
 └── README.md                     # Este archivo
 ```
@@ -57,7 +59,12 @@ pip install pywin32==306
 
 ## 🎯 Uso
 
-### Ejecución Principal
+### Ejecución Principal (Sistema Simplificado - RECOMENDADO)
+```bash
+python main_simplified.py
+```
+
+### Ejecución del Sistema Completo
 ```bash
 python main.py
 ```
@@ -65,6 +72,7 @@ python main.py
 ### Ejecución de Tests
 ```bash
 python tests/test_remote_desktop.py
+python test_click_based_navigation.py
 ```
 
 ## 🔧 Configuración
@@ -86,8 +94,9 @@ El archivo `src/config.py` contiene todas las configuraciones del sistema:
 - Verificación visual de estado
 
 ### 2. Automatización de SAP
-- Navegación automática a módulos
-- Apertura de menús de ventas
+- **Navegación por Clics**: Estrategia optimizada que funciona perfectamente
+- Navegación automática a módulos mediante clics directos
+- Apertura de menús de ventas con detección visual
 - Acceso a formularios de órdenes de venta
 - Verificación de estados de la aplicación
 
@@ -99,11 +108,17 @@ El archivo `src/config.py` contiene todas las configuraciones del sistema:
 
 ## 🧪 Testing
 
-El sistema incluye un test unificado que verifica:
+El sistema incluye múltiples tests que verifican:
 
 1. **RemoteDesktopManager**: Detección y activación de ventanas
-2. **Automatización Completa**: Flujo completo de SAP
-3. **Activación Rápida**: Pruebas de rendimiento
+2. **Navegación por Clics**: Estrategia optimizada de navegación en SAP
+3. **Automatización Completa**: Flujo completo de SAP
+4. **Activación Rápida**: Pruebas de rendimiento
+
+### Tests Disponibles
+- `test_click_based_navigation.py`: Test de navegación por clics (funcionando)
+- `test_sap_current_state.py`: Diagnóstico del estado actual de SAP
+- `test_final_automation.py`: Test final del sistema principal
 
 ## 📝 Logs
 
@@ -141,6 +156,9 @@ Revisa `orderloader.log` para información detallada de errores.
 - ✅ Manejo robusto de errores
 - ✅ Múltiples estrategias de activación
 - ✅ Verificación visual mejorada
+- ✅ **Navegación por Clics Optimizada** (NUEVO)
+- ✅ **Sistema Simplificado Funcionando** (NUEVO)
+- ✅ **Estrategia de Navegación Probada** (NUEVO)
 
 ## 🤝 Contribución
 

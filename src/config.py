@@ -95,13 +95,13 @@ ASUMIENDO QUE:
 - El escritorio remoto ya está abierto y conectado a 20.96.6.64
 - SAP Desktop ya está iniciado en el escritorio remoto
 
-WORKFLOW OPTIMIZADO:
+WORKFLOW OPTIMIZADO (NAVEGACIÓN POR CLICS):
 1. Activar ventana del escritorio remoto (20.96.6.64)
 2. Verificar que SAP Desktop ya esté abierto
 3. Maximizar ventana del escritorio remoto
-4. Alt+M (abrir menú de módulos)
-5. V (navegar al módulo de ventas)
-6. Buscar y hacer clic en botón de órdenes de venta
+4. Clic en botón de módulos (abrir menú de módulos)
+5. Clic en ventas (navegar al módulo de ventas)
+6. Clic en órdenes de venta (acceder al formulario)
 7. Verificar formulario de órdenes de venta
 8. Procesar archivos JSON de la cola
 
@@ -125,6 +125,9 @@ MEJORAS EN ESTA VERSIÓN:
 - Verificación visual mejorada
 - Logs detallados para debugging
 - Enfoque especializado en módulo de ventas
+- **Navegación por Clics Optimizada** (NUEVO)
+- **Sistema Simplificado Funcionando** (NUEVO)
+- **Estrategia de Navegación Probada** (NUEVO)
 """,
     
     'success': "✅ Procesamiento completado exitosamente",
