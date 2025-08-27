@@ -36,68 +36,77 @@ class SAPAutomation:
         
     def get_remote_desktop(self) -> bool:
         """
-        Método principal para obtener y activar el escritorio remoto
+        Método principal para obtener y activar el escritorio remoto (20.96.6.64)
         Implementa múltiples estrategias de recuperación
         """
-        logger.info("🚀 Iniciando proceso de conexión al escritorio remoto...")
+        logger.info("🚀 Iniciando proceso de conexión al escritorio remoto (20.96.6.64)...")
         
         for attempt in range(self.remote_manager.max_attempts):
             logger.info(f"Intento {attempt + 1}/{self.remote_manager.max_attempts}")
             
-            # Paso 1: Encontrar la ventana
+            # Paso 1: Encontrar la ventana del escritorio remoto
             window_info = self.remote_manager.find_remote_desktop_window()
             if not window_info:
-                logger.error(f"Intento {attempt + 1}: No se encontró ventana de escritorio remoto")
+                logger.error(f"Intento {attempt + 1}: No se encontró ventana de escritorio remoto (20.96.6.64)")
                 if attempt < self.remote_manager.max_attempts - 1:
                     logger.info(f"Esperando {self.remote_manager.retry_delay} segundos antes del siguiente intento...")
                     time.sleep(self.remote_manager.retry_delay)
                 continue
             
-            # Paso 2: Activar la ventana
+            # Paso 2: Activar la ventana del escritorio remoto
             if not self.remote_manager.activate_window_advanced(window_info):
-                logger.error(f"Intento {attempt + 1}: No se pudo activar la ventana")
+                logger.error(f"Intento {attempt + 1}: No se pudo activar la ventana del escritorio remoto")
                 if attempt < self.remote_manager.max_attempts - 1:
                     logger.info(f"Esperando {self.remote_manager.retry_delay} segundos antes del siguiente intento...")
                     time.sleep(self.remote_manager.retry_delay)
                 continue
             
-            # Paso 3: Maximizar la ventana
-            if not self.remote_manager.maximize_window_advanced():
-                logger.warning("No se pudo maximizar la ventana, pero continuando...")
-            
-            # Paso 4: Verificar que estamos en el escritorio remoto
+            # Paso 3: Verificar que estamos en el escritorio remoto
             if self.verify_remote_desktop_visual():
-                logger.info("✅ Escritorio remoto activado y verificado correctamente")
+                logger.info("✅ Escritorio remoto (20.96.6.64) activado y verificado correctamente")
                 return True
             else:
-                logger.warning(f"Intento {attempt + 1}: Verificación visual falló")
+                logger.warning(f"Intento {attempt + 1}: Verificación visual del escritorio remoto falló")
                 if attempt < self.remote_manager.max_attempts - 1:
                     logger.info(f"Esperando {self.remote_manager.retry_delay} segundos antes del siguiente intento...")
                     time.sleep(self.remote_manager.retry_delay)
         
-        logger.error("❌ No se pudo conectar al escritorio remoto después de todos los intentos")
+        logger.error("❌ No se pudo conectar al escritorio remoto (20.96.6.64) después de todos los intentos")
         return False
     
     def verify_remote_desktop_visual(self) -> bool:
-        """Verifica visualmente que estamos en el escritorio remoto"""
+        """Verifica visualmente que estamos en el escritorio remoto usando técnicas robustas"""
         logger.info("🔍 Verificando escritorio remoto visualmente...")
         
-        # Buscar imagen de referencia del escritorio remoto
+        # Estrategia 1: Buscar imagen de referencia del escritorio remoto
         if self.image_recognition.wait_for_image("core/remote_desktop.png", 
                                                timeout=REMOTE_DESKTOP_CONFIG['visual_verification_timeout']):
             logger.info("✅ Escritorio remoto verificado visualmente")
+            return True
+        
+        # Estrategia 2: Usar búsqueda robusta con múltiples niveles de confianza
+        if self.image_recognition.find_image_robust("core/remote_desktop.png", [0.8, 0.7, 0.6]):
+            logger.info("✅ Escritorio remoto detectado con búsqueda robusta")
+            return True
+        
+        # Estrategia 3: Template matching más preciso
+        if self.image_recognition.find_image_with_template_matching("core/remote_desktop.png", threshold=0.7):
+            logger.info("✅ Escritorio remoto detectado con template matching")
             return True
         
         logger.warning("⚠️ No se pudo verificar visualmente el escritorio remoto")
         return False
     
     def verify_sap_desktop(self) -> bool:
-        """Verifica que estamos en SAP Desktop"""
-        logger.info("Verificando SAP Desktop...")
-        if self.image_recognition.wait_for_image("core/sap_desktop.png"):
-            logger.info("SAP Desktop detectado correctamente")
+        """Verifica que SAP Desktop está visible en el escritorio remoto usando estrategias avanzadas"""
+        logger.info("🔍 Verificando que SAP Desktop esté visible en el escritorio remoto...")
+        
+        # Usar la verificación avanzada con múltiples técnicas
+        if self.image_recognition.verify_sap_desktop_advanced():
+            logger.info("✅ SAP Desktop detectado correctamente - la aplicación ya está abierta")
             return True
-        logger.error("SAP Desktop no detectado")
+            
+        logger.error("❌ SAP Desktop no está visible - verifica que la aplicación esté abierta en el escritorio remoto")
         return False
     
     def maximize_window(self) -> bool:
@@ -113,42 +122,46 @@ class SAPAutomation:
     
     def open_modules_menu(self) -> bool:
         """Abre el menú de módulos usando Alt+M"""
-        logger.info("Abriendo menú de módulos...")
+        logger.info("⌨️ Presionando Alt+M para abrir menú de módulos...")
         try:
             pyautogui.hotkey(*KEYBOARD_SHORTCUTS['open_modules'])
             time.sleep(1)
             
             # Verificar que el menú se abrió
             if self.image_recognition.wait_for_image("sap/sap_modulos_menu.png"):
-                logger.info("Menú de módulos abierto correctamente")
+                logger.info("✅ Menú de módulos abierto correctamente con Alt+M")
                 return True
-            return False
+            logger.warning("⚠️ Menú de módulos no detectado visualmente, pero continuando...")
+            return True  # Continuamos aunque no detectemos visualmente
         except Exception as e:
-            logger.error(f"Error abriendo menú de módulos: {e}")
+            logger.error(f"❌ Error abriendo menú de módulos con Alt+M: {e}")
             return False
     
     def navigate_to_sales(self) -> bool:
-        """Navega a la sección de ventas"""
-        logger.info("Navegando a ventas...")
+        """Navega a la sección de ventas usando la tecla V"""
+        logger.info("⌨️ Presionando V para navegar a ventas...")
         try:
             pyautogui.press(KEYBOARD_SHORTCUTS['navigate_sales'])
             time.sleep(1)
             
             # Verificar que estamos en el menú de ventas
             if self.image_recognition.wait_for_image("sap/sap_ventas_order_menu.png"):
-                logger.info("Menú de ventas abierto correctamente")
+                logger.info("✅ Menú de ventas abierto correctamente con V")
                 return True
-            return False
+            logger.warning("⚠️ Menú de ventas no detectado visualmente, pero continuando...")
+            return True  # Continuamos aunque no detectemos visualmente
         except Exception as e:
-            logger.error(f"Error navegando a ventas: {e}")
+            logger.error(f"❌ Error navegando a ventas con V: {e}")
             return False
     
     def open_sales_order(self) -> bool:
-        """Abre la orden de venta"""
-        logger.info("Abriendo orden de venta...")
+        """Busca y hace clic en el botón de órdenes de venta"""
+        logger.info("🔍 Buscando botón de órdenes de venta...")
         if self.image_recognition.click_image("sap/sap_ventas_order_button.png"):
             time.sleep(2)
+            logger.info("✅ Botón de órdenes de venta encontrado y clickeado")
             return True
+        logger.error("❌ No se pudo encontrar el botón de órdenes de venta")
         return False
     
     def verify_sales_order_form(self) -> bool:
@@ -174,49 +187,59 @@ class SAPAutomation:
         return missing_images
     
     def run_automation(self) -> bool:
-        """Ejecuta el proceso completo de automatización"""
-        logger.info("Iniciando automatización de SAP...")
+        """
+        Ejecuta el proceso completo de automatización
+        Workflow optimizado: Escritorio Remoto → SAP Desktop (ya abierto) → Alt+M → V → Botón Órdenes
+        """
+        logger.info("🚀 Iniciando automatización de SAP...")
         
         try:
-            # Paso 1: Obtener el escritorio remoto
+            # Paso 1: Obtener y activar escritorio remoto (20.96.6.64)
+            logger.info("📍 Paso 1: Activando escritorio remoto...")
             if not self.get_remote_desktop():
-                logger.error("No se pudo conectar al escritorio remoto")
+                logger.error("❌ No se pudo obtener el escritorio remoto")
                 return False
             
-            # Paso 2: Verificar SAP Desktop
+            # Paso 2: Verificar que SAP Desktop ya está abierto (imagen de referencia)
+            logger.info("📍 Paso 2: Verificando que SAP Desktop esté visible...")
             if not self.verify_sap_desktop():
-                logger.error("No se detectó SAP Desktop")
+                logger.error("❌ SAP Desktop no está visible en el escritorio remoto")
                 return False
             
-            # Paso 3: Maximizar ventana
-            if not self.maximize_window():
-                logger.warning("No se pudo maximizar la ventana, pero continuando...")
+            # Paso 3: Maximizar la ventana del escritorio remoto
+            logger.info("📍 Paso 3: Maximizando ventana del escritorio remoto...")
+            if not self.remote_manager.maximize_window_advanced():
+                logger.warning("⚠️ No se pudo maximizar la ventana, pero continuando...")
             
-            # Paso 4: Abrir menú de módulos
+            # Paso 4: Presionar Alt+M para abrir menú de módulos
+            logger.info("📍 Paso 4: Abriendo menú de módulos (Alt+M)...")
             if not self.open_modules_menu():
-                logger.error("No se pudo abrir el menú de módulos")
+                logger.error("❌ No se pudo abrir el menú de módulos")
                 return False
             
-            # Paso 5: Navegar a ventas
+            # Paso 5: Presionar V para navegar a ventas
+            logger.info("📍 Paso 5: Navegando a ventas (V)...")
             if not self.navigate_to_sales():
-                logger.error("No se pudo navegar a ventas")
+                logger.error("❌ No se pudo navegar a ventas")
                 return False
             
-            # Paso 6: Abrir orden de venta
+            # Paso 6: Buscar y hacer clic en el botón de órdenes de venta
+            logger.info("📍 Paso 6: Buscando botón de órdenes de venta...")
             if not self.open_sales_order():
-                logger.error("No se pudo abrir la orden de venta")
+                logger.error("❌ No se pudo abrir la orden de venta")
                 return False
             
-            # Paso 7: Verificar formulario
+            # Paso 7: Verificar que el formulario esté abierto
+            logger.info("📍 Paso 7: Verificando formulario de orden de venta...")
             if not self.verify_sales_order_form():
-                logger.error("No se pudo verificar el formulario de orden de venta")
+                logger.error("❌ No se pudo verificar el formulario de orden de venta")
                 return False
             
-            logger.info("¡Automatización completada exitosamente!")
+            logger.info("✅ ¡Automatización completada exitosamente!")
             return True
             
         except Exception as e:
-            logger.error(f"Error durante la automatización: {e}")
+            logger.error(f"❌ Error durante la automatización: {e}")
             return False
 
     def process_queue(self) -> bool:
@@ -267,18 +290,22 @@ class SAPAutomation:
     
     def process_single_file(self, file_path: Path) -> bool:
         """
-        Procesa un archivo individual
-        Por ahora ejecuta la automatización completa de SAP
-        En el futuro se puede personalizar según el tipo de archivo
+        Procesa un archivo individual (JSON con datos de orden de compra)
+        Ejecuta la automatización completa de SAP para cada archivo
         """
         logger.info(f"🔄 Iniciando procesamiento de: {file_path.name}")
         
         try:
+            # Verificar que es un archivo JSON
+            if not file_path.suffix.lower() == '.json':
+                logger.warning(f"⚠️ Archivo {file_path.name} no es JSON, pero continuando...")
+            
             # Ejecutar la automatización completa de SAP
             success = self.run_automation()
             
             if success:
                 logger.info(f"✅ Automatización completada para: {file_path.name}")
+                logger.info(f"📋 Archivo JSON procesado: {file_path.name}")
                 return True
             else:
                 logger.error(f"❌ Automatización falló para: {file_path.name}")

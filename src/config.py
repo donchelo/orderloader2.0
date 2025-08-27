@@ -76,7 +76,7 @@ ERROR_RECOVERY_CONFIG = {
 
 # Configuración de colas
 QUEUE_CONFIG = {
-    'supported_formats': ['.pdf', '.png', '.jpg', '.jpeg', '.txt'],
+    'supported_formats': ['.pdf', '.png', '.jpg', '.jpeg', '.txt', '.json'],
     'auto_process': True,  # Procesar automáticamente al iniciar
     'show_status': True,   # Mostrar estado de colas
 }
@@ -91,13 +91,28 @@ OrderLoader 2.0 - Automatización de SAP para Órdenes de Venta
 Este sistema automatizará la navegación en SAP
 hasta el formulario de órdenes de venta.
 
+ASUMIENDO QUE:
+- El escritorio remoto ya está abierto y conectado a 20.96.6.64
+- SAP Desktop ya está iniciado en el escritorio remoto
+
+WORKFLOW OPTIMIZADO:
+1. Activar ventana del escritorio remoto (20.96.6.64)
+2. Verificar que SAP Desktop ya esté abierto
+3. Maximizar ventana del escritorio remoto
+4. Alt+M (abrir menú de módulos)
+5. V (navegar al módulo de ventas)
+6. Buscar y hacer clic en botón de órdenes de venta
+7. Verificar formulario de órdenes de venta
+8. Procesar archivos JSON de la cola
+
 SISTEMA DE COLAS:
-- Coloca archivos en 'queues/pending/' para procesamiento
+- Coloca archivos JSON en 'queues/pending/' para procesamiento
 - Los archivos se procesan en orden FIFO (primero en llegar, primero en procesar)
 - Los archivos procesados se mueven a 'queues/completed/'
 
 IMPORTANTE:
-- Asegúrate de que el escritorio remoto esté abierto y conectado a SAP
+- El escritorio remoto debe estar abierto y conectado a 20.96.6.64
+- SAP Desktop debe estar iniciado en el escritorio remoto
 - El sistema procesará automáticamente todos los archivos en la cola
 - No muevas el mouse durante la automatización
 - Para detener: mueve el mouse a la esquina superior izquierda

@@ -43,19 +43,28 @@ src/
 
 ## 🎯 Flujo de Automatización
 
-### 1. **Activación del Escritorio Remoto**
+### 1. **Activación del Escritorio Remoto (20.96.6.64)**
 - Busca ventana de escritorio remoto usando PowerShell
 - Activa la ventana con múltiples estrategias
-- Maximiza la ventana automáticamente
-- Verifica visualmente que está conectado
+- Verifica visualmente que está conectado al servidor 20.96.6.64
 
-### 2. **Navegación en SAP**
-- Verifica que SAP Desktop esté visible
-- Navega al menú de módulos (Alt+M)
-- Accede al módulo de ventas
-- Abre el formulario de órdenes de venta
+### 2. **Verificación de SAP Desktop**
+- Confirma que SAP Desktop esté visible en el escritorio remoto
+- Busca la imagen de referencia `core/sap_desktop.png`
 
-### 3. **Sistema de Recuperación**
+### 3. **Navegación en SAP**
+- **Maximiza** la ventana del escritorio remoto
+- **Alt+M**: Abre el menú de módulos
+- **V**: Navega al módulo de ventas
+- **Busca y hace clic** en el botón de órdenes de venta (`sap_ventas_order_button.png`)
+- Verifica que el formulario de órdenes esté abierto
+
+### 4. **Procesamiento de Cola**
+- Procesa archivos JSON de `queues/pending/`
+- Ejecuta la automatización completa para cada archivo
+- Mueve archivos procesados a `queues/completed/`
+
+### 5. **Sistema de Recuperación**
 - Reintentos automáticos en caso de fallo
 - Múltiples estrategias de activación
 - Logging detallado para debugging
@@ -119,6 +128,20 @@ assets/images/
 ```bash
 python main.py
 ```
+
+### Test del Workflow
+```bash
+python test_workflow.py
+```
+
+### Workflow Detallado
+1. **Preparación**: Coloca archivos JSON en `queues/pending/`
+2. **Ejecución**: El sistema ejecuta automáticamente:
+   - Conecta al escritorio remoto (20.96.6.64)
+   - Verifica SAP Desktop
+   - Maximiza ventana
+   - Alt+M → V → Botón órdenes
+   - Procesa archivos JSON de la cola
 
 ### Verificación de Imágenes
 El sistema verifica automáticamente que todas las imágenes de referencia estén presentes antes de iniciar.
