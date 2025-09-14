@@ -1,8 +1,8 @@
-# 🎯 OrderLoader 2.0 - Sistema Consolidado
+# 🎯 OrderLoader 2.0 - Sistema Simplificado
 
 ## 📋 **Descripción**
 
-Sistema de automatización SAP consolidado con mejores prácticas. **Versión final limpia y organizada.**
+Sistema de automatización SAP simplificado y optimizado. **Versión 5.0.0 enfocada en procesamiento de cola sin navegación automática.**
 
 ## 🚀 **Instalación y Uso**
 
@@ -67,7 +67,7 @@ orderLoader2.0/
 ## 🔧 **Funcionalidad**
 
 1. **Conectar al escritorio remoto** (20.96.6.64)
-2. **Navegar en SAP**: Módulos → Ventas → Órdenes
+2. **Verificar que SAP esté abierto** (opcional)
 3. **Procesar archivos JSON** de la cola (`data/pending/`)
 4. **Mover archivos completados** automáticamente (`data/completed/`)
 5. **Sistema de logging** detallado (`logs/`)
@@ -77,10 +77,11 @@ orderLoader2.0/
 
 - **Archivos totales**: -84% (50+ → 8)
 - **Versiones**: -75% (4 → 1)
-- **Líneas de código**: -80% (2000+ → 400)
+- **Líneas de código**: -85% (2000+ → 300)
 - **Dependencias**: -67% (6 → 2)
-- **Complejidad**: -90% (Alta → Mínima)
+- **Imágenes requeridas**: -100% (3 → 0)
+- **Complejidad**: -95% (Alta → Mínima)
 
 ---
 
-**¡Sistema consolidado y listo para usar!** 🚀
+**¡Sistema simplificado y listo para usar!** 🚀

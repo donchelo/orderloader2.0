@@ -51,7 +51,7 @@ class OrderLoaderFinal:
     
     def setup_directories(self):
         """Crear directorios necesarios"""
-        directories = [DATA_PATH, PENDING_PATH, COMPLETED_PATH, IMAGES_PATH, SAP_IMAGES_PATH]
+        directories = [DATA_PATH, PENDING_PATH, COMPLETED_PATH]
         
         for directory in directories:
             directory.mkdir(parents=True, exist_ok=True)
@@ -63,19 +63,8 @@ class OrderLoaderFinal:
         self.logger.info("📁 Directorios del sistema configurados")
     
     def validate_system(self) -> bool:
-        """Validar que el sistema esté listo"""
+        """Validar que el sistema esté listo - Versión simplificada"""
         self.logger.info("🔍 Validando sistema...")
-        
-        # Validar imágenes requeridas
-        missing_images = []
-        for image in REQUIRED_IMAGES:
-            image_path = IMAGES_PATH / image
-            if not image_path.exists():
-                missing_images.append(image)
-        
-        if missing_images:
-            self.logger.error(f"❌ Imágenes requeridas faltantes: {missing_images}")
-            return False
         
         # Validar permisos
         try:
@@ -267,88 +256,31 @@ class OrderLoaderFinal:
             self.logger.error(f"❌ Error maximizando ventana: {e}")
             return False
     
-    def find_image_on_screen(self, image_name: str, confidence: float = None) -> Optional[Tuple[int, int]]:
-        """Buscar imagen en la pantalla"""
-        if confidence is None:
-            confidence = IMAGE_RECOGNITION['confidence']
-        
-        image_path = IMAGES_PATH / image_name
-        
-        if not image_path.exists():
-            self.logger.error(f"❌ Imagen no encontrada: {image_path}")
-            return None
+    def verify_sap_visible(self) -> bool:
+        """Verificar que SAP esté visible en pantalla (opcional)"""
+        self.logger.info("🔍 Verificando que SAP esté visible...")
         
         try:
-            self.logger.debug(f"🔍 Buscando imagen: {image_name} (confianza: {confidence})")
+            # Usar PowerShell para verificar ventanas de SAP
+            result = subprocess.run([
+                'powershell', '-Command',
+                'Get-Process | Where-Object {$_.MainWindowTitle -ne ""} | '
+                'Where-Object {$_.MainWindowTitle -match "SAP"} | '
+                'Select-Object MainWindowTitle | ConvertTo-Json'
+            ], capture_output=True, text=True, timeout=5)
             
-            location = pyautogui.locateOnScreen(str(image_path), confidence=confidence)
+            if result.stdout and result.returncode == 0:
+                sap_windows = json.loads(result.stdout)
+                if sap_windows:
+                    self.logger.info("✅ SAP detectado en el escritorio remoto")
+                    return True
             
-            if location:
-                center = pyautogui.center(location)
-                self.logger.info(f"✅ Imagen encontrada: {image_name} en {center}")
-                return center
-            else:
-                self.logger.warning(f"⚠️ Imagen no encontrada: {image_name}")
-                return None
-                
+            self.logger.warning("⚠️ No se detectó SAP en el escritorio remoto")
+            return False
+            
         except Exception as e:
-            self.logger.error(f"❌ Error buscando imagen {image_name}: {e}")
-            return None
-    
-    def click_image(self, image_name: str, confidence: float = None) -> bool:
-        """Buscar y hacer clic en una imagen"""
-        position = self.find_image_on_screen(image_name, confidence)
-        
-        if position:
-            try:
-                pyautogui.click(position)
-                self.logger.info(f"🖱️ Clic exitoso en: {image_name}")
-                
-                # Pausa entre acciones
-                time.sleep(IMAGE_RECOGNITION['pause_between_actions'])
-                return True
-                
-            except Exception as e:
-                self.logger.error(f"❌ Error haciendo clic en {image_name}: {e}")
-                return False
-        
-        return False
-    
-    def navigate_sap(self) -> bool:
-        """Navegar en SAP hasta el formulario de órdenes"""
-        self.logger.info("🧭 Navegando en SAP...")
-        
-        # Definir pasos de navegación
-        navigation_steps = [
-            {
-                'image': 'sap/sap_modulos_menu_button.png',
-                'description': 'Botón de módulos',
-                'wait_time': WAIT_TIMES['after_modules_click']
-            },
-            {
-                'image': 'sap/sap_ventas_menu_button.png',
-                'description': 'Botón de ventas',
-                'wait_time': WAIT_TIMES['after_sales_click']
-            },
-            {
-                'image': 'sap/sap_ventas_order_button.png',
-                'description': 'Botón de órdenes de venta',
-                'wait_time': WAIT_TIMES['after_orders_click']
-            }
-        ]
-        
-        # Ejecutar pasos de navegación
-        for step in navigation_steps:
-            self.logger.info(f"📍 Haciendo clic en: {step['description']}")
-            
-            if not self.click_image(step['image']):
-                self.logger.error(f"❌ No se pudo hacer clic en: {step['description']}")
-                return False
-            
-            time.sleep(step['wait_time'])
-        
-        self.logger.info("✅ Navegación en SAP completada")
-        return True
+            self.logger.warning(f"⚠️ Error verificando SAP: {e}")
+            return False
     
     def get_pending_files(self) -> List[Path]:
         """Obtener archivos pendientes"""
@@ -514,8 +446,8 @@ class OrderLoaderFinal:
         print(f"   📈 Total: {status['total']}")
     
     def run(self) -> bool:
-        """Ejecutar proceso completo"""
-        self.logger.info("🎯 Iniciando automatización completa...")
+        """Ejecutar proceso completo - Versión simplificada"""
+        self.logger.info("🎯 Iniciando automatización simplificada...")
         
         try:
             # Paso 1: Validar sistema
@@ -539,15 +471,15 @@ class OrderLoaderFinal:
             self.logger.info(f"⏳ Esperando {wait_time} segundos para estabilizar...")
             time.sleep(wait_time)
             
-            # Paso 4: Navegar en SAP
-            if not self.navigate_sap():
-                return False
+            # Paso 4: Verificar SAP (opcional)
+            if not self.verify_sap_visible():
+                self.logger.warning("⚠️ SAP no parece estar visible")
             
             # Paso 5: Procesar cola
             if not self.process_queue():
                 return False
             
-            self.logger.info("🎉 ¡Automatización completada exitosamente!")
+            self.logger.info("🎉 ¡Procesamiento completado exitosamente!")
             return True
             
         except Exception as e:

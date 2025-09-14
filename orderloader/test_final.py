@@ -41,12 +41,11 @@ def test_directory_structure():
     try:
         order_loader = OrderLoaderFinal()
         
-        # Verificar que se crearon las carpetas
+        # Verificar que se crearon las carpetas esenciales
         required_dirs = [
             Path("data"),
             Path("data/pending"),
             Path("data/completed"),
-            Path("assets/images/sap"),
             Path("logs")
         ]
         
@@ -60,24 +59,15 @@ def test_directory_structure():
         return False
 
 def test_image_validation():
-    """Test 3: Validación de imágenes"""
+    """Test 3: Validación de imágenes (ya no requeridas)"""
     print("🖼️ Test 3: Validación de imágenes...")
     
     try:
         order_loader = OrderLoaderFinal()
         
-        # Verificar imágenes requeridas
-        missing_images = []
-        for image in REQUIRED_IMAGES:
-            image_path = IMAGES_PATH / image
-            if not image_path.exists():
-                missing_images.append(image)
-        
-        if missing_images:
-            print(f"⚠️ Imágenes faltantes: {missing_images}")
-            print("   (Esto es normal si no has copiado las imágenes aún)")
-        else:
-            print("✅ Todas las imágenes requeridas están presentes")
+        # Ya no se requieren imágenes para navegación automática
+        assert len(REQUIRED_IMAGES) == 0, "No deberían requerirse imágenes"
+        print("✅ Sistema simplificado - No se requieren imágenes")
         
         return True
     except Exception as e:
@@ -168,8 +158,11 @@ def test_basic_functionality():
         # Verificar que la clase se inicializa correctamente
         assert hasattr(order_loader, 'validate_system'), "Método validate_system no existe"
         assert hasattr(order_loader, 'find_remote_desktop_window'), "Método find_remote_desktop_window no existe"
-        assert hasattr(order_loader, 'navigate_sap'), "Método navigate_sap no existe"
+        assert hasattr(order_loader, 'verify_sap_visible'), "Método verify_sap_visible no existe"
         assert hasattr(order_loader, 'process_queue'), "Método process_queue no existe"
+        
+        # Verificar que ya no existe navigate_sap
+        assert not hasattr(order_loader, 'navigate_sap'), "Método navigate_sap debería haber sido eliminado"
         
         # Verificar estado de colas
         order_loader.print_queue_status()  # No debe generar error
@@ -183,7 +176,7 @@ def test_basic_functionality():
 def run_all_tests():
     """Ejecutar todos los tests"""
     print("=" * 60)
-    print("🧪 TESTS PARA ORDERLOADER FINAL")
+    print("🧪 TESTS PARA ORDERLOADER SIMPLIFICADO v5.0.0")
     print("=" * 60)
     print("Verificando funcionalidad básica sin conexión SAP...")
     print()
@@ -230,7 +223,7 @@ if __name__ == "__main__":
     
     print("\n📋 PRÓXIMOS PASOS:")
     if success:
-        print("1. ✅ Copia las imágenes requeridas a assets/images/sap/")
+        print("1. ✅ Asegúrate de que SAP esté abierto en el escritorio remoto")
         print("2. ✅ Coloca archivos JSON en data/pending/")
         print("3. ✅ Ejecuta: python main.py")
     else:

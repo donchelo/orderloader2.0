@@ -52,11 +52,8 @@ WAIT_TIMES = {
 
 # ==================== IMÁGENES REQUERIDAS ====================
 
-REQUIRED_IMAGES = [
-    "sap/sap_modulos_menu_button.png",
-    "sap/sap_ventas_menu_button.png",
-    "sap/sap_ventas_order_button.png",
-]
+# Ya no se requieren imágenes para navegación automática
+REQUIRED_IMAGES = []
 
 # ==================== CONFIGURACIÓN DE ARCHIVOS ====================
 
@@ -80,17 +77,17 @@ LOGGING_CONFIG = {
 
 MESSAGES = {
     'welcome': """
-🎯 ORDERLOADER FINAL v4.0.0
-Sistema consolidado con mejores prácticas
+🎯 ORDERLOADER SIMPLIFICADO v5.0.0
+Sistema optimizado para procesamiento de cola
 
 FUNCIONALIDAD:
 1. Conectar al escritorio remoto (20.96.6.64)
-2. Navegar en SAP: Módulos → Ventas → Órdenes
+2. Verificar que SAP esté abierto
 3. Procesar archivos JSON de la cola
 
 REQUISITOS:
 - Escritorio remoto abierto y conectado a 20.96.6.64
-- SAP Desktop iniciado en el escritorio remoto
+- SAP Desktop ya abierto en el escritorio remoto
 - Archivos JSON en data/pending/
 """,
     
