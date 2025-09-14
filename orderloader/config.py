@@ -14,9 +14,11 @@ PENDING_PATH = DATA_PATH / "pending"
 COMPLETED_PATH = DATA_PATH / "completed"
 LOGS_PATH = PROJECT_ROOT / "logs"
 
-# Configuración de conexión
-REMOTE_DESKTOP_IP = "20.96.6.64"
-REMOTE_DESKTOP_KEYWORDS = ["remoto", "Conexión", "Remote", REMOTE_DESKTOP_IP]
+# Configuración de Chrome/SAP
+ALT_TAB_DELAY = 1.0  # Tiempo de espera después de Alt+Tab
+CHROME_STABILIZATION_WAIT = 3  # Tiempo de estabilización para Chrome
+CHROME_KEYWORDS = ["chrome", "google chrome", "autosky", "sap business one"]
+SAP_APP_KEYWORDS = ["auto.sky", "web access", "sap business one"]
 
 # Configuración simple
 PAUSE_BETWEEN_ACTIONS = 0.5
