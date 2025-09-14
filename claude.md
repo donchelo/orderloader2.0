@@ -12,9 +12,27 @@
 
 ## 🏗️ Arquitectura del Sistema
 
-### Estructura Modular
+### Estructura Consolidada (Versión Final)
 ```
-src/
+orderloader/
+├── main.py                   # Código principal consolidado (400 líneas)
+├── config.py                 # Configuración centralizada
+├── requirements.txt          # Solo 2 dependencias (pyautogui, psutil)
+├── test_final.py            # Test único y completo
+├── README.md                # Documentación del sistema
+├── assets/images/sap/       # Solo 3 imágenes esenciales
+│   ├── sap_modulos_menu_button.png
+│   ├── sap_ventas_menu_button.png
+│   └── sap_ventas_order_button.png
+├── data/                    # Datos del sistema
+│   ├── pending/             # Archivos JSON pendientes
+│   └── completed/           # Archivos procesados
+└── logs/                    # Logs del sistema
+```
+
+### Estructura Legacy (Referencia)
+```
+src/ (ELIMINADO - Era la versión original)
 ├── core/                     # Funcionalidades principales
 │   ├── remote_desktop_manager.py  # Gestión de escritorio remoto
 │   ├── image_recognition.py       # Reconocimiento de imágenes (OpenCV)
@@ -24,22 +42,31 @@ src/
 └── config.py                 # Configuración centralizada
 ```
 
-### Componentes Principales
+### Componentes Principales (Versión Consolidada)
 
-#### 1. **SAPAutomation** (`src/core/sap_automation.py`)
-- Clase principal que orquesta toda la automatización
-- Coordina la gestión del escritorio remoto y la navegación en SAP
-- Implementa verificación visual y recuperación de errores
+#### 1. **OrderLoader** (`orderloader/main.py`)
+- **Código principal consolidado** - Todo en un archivo (400 líneas)
+- **Clase principal** que orquesta toda la automatización
+- **Gestión del escritorio remoto** y navegación en SAP integradas
+- **Sistema de logging** y recuperación de errores incluido
+- **Procesamiento de colas** de archivos JSON
 
-#### 2. **RemoteDesktopManager** (`src/core/remote_desktop_manager.py`)
-- Gestiona la detección, activación y maximización de ventanas de escritorio remoto
-- Implementa múltiples estrategias de activación (Alt+Tab, PowerShell, Win+Tab)
-- Maneja la conexión al servidor remoto (20.96.6.64)
+#### 2. **Configuración** (`orderloader/config.py`)
+- **Configuración centralizada** - Todas las configuraciones en un lugar
+- **Configuraciones de reconocimiento** - OpenCV y PyAutoGUI
+- **Configuraciones de escritorio remoto** - Estrategias de activación
+- **Configuraciones de SAP** - Navegación y timeouts
 
-#### 3. **ImageRecognition** (`src/core/image_recognition.py`)
-- Utiliza OpenCV para reconocimiento de imágenes en pantalla
-- Busca elementos específicos de SAP usando imágenes de referencia
-- Configurable con niveles de confianza y timeouts
+#### 3. **Sistema de Testing** (`orderloader/test_final.py`)
+- **Test único y completo** - Verifica toda la funcionalidad
+- **Tests sin conexión SAP** - Verificación de componentes básicos
+- **Validación de estructura** - Directorios y archivos
+- **Procesamiento de JSON** - Validación de datos
+
+### Componentes Legacy (Referencia)
+#### 1. **SAPAutomation** (`src/core/sap_automation.py`) - ELIMINADO
+#### 2. **RemoteDesktopManager** (`src/core/remote_desktop_manager.py`) - ELIMINADO  
+#### 3. **ImageRecognition** (`src/core/image_recognition.py`) - ELIMINADO
 
 ## 🎯 Flujo de Automatización
 
@@ -60,9 +87,10 @@ src/
 - Verifica que el formulario de órdenes esté abierto
 
 ### 4. **Procesamiento de Cola**
-- Procesa archivos JSON de `queues/pending/`
+- Procesa archivos JSON de `data/pending/` (nueva estructura)
 - Ejecuta la automatización completa para cada archivo
-- Mueve archivos procesados a `queues/completed/`
+- Mueve archivos procesados a `data/completed/` (nueva estructura)
+- Mantiene compatibilidad con `queues/` (estructura legacy)
 
 ### 5. **Sistema de Recuperación**
 - Reintentos automáticos en caso de fallo
@@ -72,19 +100,32 @@ src/
 
 ## 🖼️ Sistema de Imágenes
 
-### Estructura de Imágenes de Referencia
+### Estructura de Imágenes de Referencia (Versión Consolidada)
 ```
-assets/images/
-├── core/                     # Imágenes principales
-│   ├── remote_desktop.png    # Escritorio remoto activo
-│   └── sap_desktop.png       # Interfaz principal de SAP
-└── sap/                      # Elementos de SAP
-    ├── sap_modulos_menu.png  # Menú de módulos
-    ├── sap_ventas_order_menu.png  # Menú de órdenes de venta
+orderloader/assets/images/sap/    # Solo 3 imágenes esenciales
+├── sap_modulos_menu_button.png   # Botón de módulos
+├── sap_ventas_menu_button.png    # Botón de ventas
+└── sap_ventas_order_button.png   # Botón de órdenes
+```
+
+### Estructura Legacy (Referencia)
+```
+assets/images/                    # Imágenes originales (referencia)
+├── core/                         # Imágenes principales
+│   ├── remote_desktop.png        # Escritorio remoto activo
+│   └── sap_desktop.png           # Interfaz principal de SAP
+└── sap/                          # Elementos de SAP
+    ├── sap_modulos_menu.png      # Menú de módulos
+    ├── sap_ventas_order_menu.png # Menú de órdenes de venta
     └── [más elementos...]
 ```
 
-### Imágenes Críticas (REQUIRED_IMAGES)
+### Imágenes Críticas (Versión Consolidada)
+- `sap_modulos_menu_button.png` - Para navegación a módulos
+- `sap_ventas_menu_button.png` - Para navegación a ventas
+- `sap_ventas_order_button.png` - Para acceso a órdenes
+
+### Imágenes Legacy (Referencia)
 - `core/remote_desktop.png` - Para verificar escritorio remoto
 - `core/sap_desktop.png` - Para verificar SAP Desktop
 - `sap/sap_modulos_menu.png` - Para navegación a módulos
@@ -94,7 +135,7 @@ assets/images/
 
 ## ⚙️ Configuración
 
-### Configuraciones Principales (`src/config.py`)
+### Configuraciones Principales (`orderloader/config.py`)
 
 #### **RECOGNITION_CONFIG**
 - `confidence`: 0.8 (nivel de confianza para reconocimiento)
@@ -114,7 +155,11 @@ assets/images/
 
 ## 🛠️ Dependencias
 
-### Librerías Principales
+### Librerías Principales (Versión Consolidada)
+- `pyautogui` - Automatización de interfaz y reconocimiento de imágenes
+- `psutil` - Información del sistema y gestión de procesos
+
+### Librerías Legacy (Referencia)
 - `pyautogui==0.9.54` - Automatización de interfaz
 - `opencv-python==4.8.1.78` - Reconocimiento de imágenes
 - `pillow==10.0.1` - Procesamiento de imágenes
@@ -124,17 +169,19 @@ assets/images/
 
 ## 🚀 Uso del Sistema
 
-### Ejecución Principal (Sistema Simplificado - RECOMENDADO)
+### Ejecución Principal (Sistema Consolidado - RECOMENDADO)
 ```bash
-python main_simplified.py
-```
-
-### Ejecución del Sistema Completo
-```bash
+cd orderloader
 python main.py
 ```
 
 ### Tests Disponibles
+```bash
+cd orderloader
+python test_final.py
+```
+
+### Tests Legacy (Referencia)
 ```bash
 python test_click_based_navigation.py
 python test_sap_current_state.py
@@ -142,19 +189,20 @@ python test_final_automation.py
 ```
 
 ### Workflow Detallado (Estrategia Optimizada)
-1. **Preparación**: Coloca archivos JSON en `queues/pending/`
+1. **Preparación**: Coloca archivos JSON en `data/pending/` (nueva estructura) o `queues/pending/` (legacy)
 2. **Ejecución**: El sistema ejecuta automáticamente:
    - Conecta al escritorio remoto (20.96.6.64)
    - Verifica SAP Desktop
    - Maximiza ventana
    - **Clic en botón de módulos** → **Clic en ventas** → **Clic en órdenes**
    - Procesa archivos JSON de la cola
+   - Mueve archivos procesados a `data/completed/` o `queues/completed/`
 
 ### Verificación de Imágenes
 El sistema verifica automáticamente que todas las imágenes de referencia estén presentes antes de iniciar.
 
 ### Logs y Debugging
-- Logs detallados en `orderloader.log`
+- Logs detallados en `logs/orderloader_YYYYMMDD.log`
 - Información de cada operación
 - Errores y advertencias
 - Tiempos de ejecución
@@ -173,7 +221,10 @@ El sistema verifica automáticamente que todas las imágenes de referencia esté
 
 ## 🧪 Testing
 
-### Tests Disponibles
+### Tests Disponibles (Versión Consolidada)
+- **`test_final.py`**: Test único y completo del sistema consolidado
+
+### Tests Legacy (Referencia)
 - **`test_click_based_navigation.py`**: Test de navegación por clics (funcionando al 100%)
 - **`test_sap_current_state.py`**: Diagnóstico del estado actual de SAP
 - **`test_final_automation.py`**: Test final del sistema principal
@@ -191,12 +242,20 @@ La navegación por clics ha sido probada exitosamente y funciona perfectamente:
 ## 📝 Consideraciones para Agentes Futuros
 
 ### Puntos Críticos
-1. **Imágenes de Referencia**: Siempre verificar que existan en `assets/images/`
+1. **Imágenes de Referencia**: Siempre verificar que existan en `orderloader/assets/images/sap/`
 2. **Escritorio Remoto**: Debe estar abierto y conectado a 20.96.6.64
 3. **SAP**: Debe estar iniciado en el escritorio remoto
 4. **Permisos**: Ejecutar como administrador si hay problemas
+5. **Estructura de Datos**: Usar `data/pending/` y `data/completed/` (nueva estructura)
 
-### Patrones de Diseño
+### Patrones de Diseño (Versión Consolidada)
+- **Arquitectura Consolidada**: Todo el código en un archivo principal
+- **Configuración Centralizada**: Todas las configuraciones en `config.py`
+- **Logging Detallado**: Sistema de logs para debugging
+- **Recuperación Robusta**: Múltiples estrategias de fallback
+- **Estructura Minimalista**: Solo archivos esenciales
+
+### Patrones Legacy (Referencia)
 - **Arquitectura Modular**: Cada componente tiene responsabilidades específicas
 - **Configuración Centralizada**: Todas las configuraciones en `config.py`
 - **Logging Detallado**: Sistema de logs para debugging
@@ -218,10 +277,36 @@ La navegación por clics ha sido probada exitosamente y funciona perfectamente:
 4. **Errores de encoding**: Son cosméticos, no afectan funcionalidad
 
 ### Debugging
-- Revisar `orderloader.log` para información detallada
-- Verificar configuración en `src/config.py`
+- Revisar `logs/orderloader_YYYYMMDD.log` para información detallada
+- Verificar configuración en `orderloader/config.py`
 - Comprobar que todas las dependencias estén instaladas
+- Verificar estructura de directorios en `orderloader/`
 
 ---
 
-**Nota**: Este proyecto está diseñado para uso interno de la empresa y requiere acceso específico al servidor SAP remoto.
+## 🔄 **Historial de Consolidación**
+
+### **Versión Final Consolidada (Actual)**
+- **Estructura**: `orderloader/` - Sistema principal consolidado
+- **Archivos**: 8 archivos principales (vs 50+ originales)
+- **Código**: 400 líneas en `main.py` (vs 2000+ distribuidas)
+- **Dependencias**: 2 librerías (vs 6 originales)
+- **Imágenes**: 3 esenciales (vs 20+ originales)
+
+### **Beneficios de la Consolidación**
+- ✅ **Eliminación de redundancias** - No más archivos duplicados
+- ✅ **Estructura minimalista** - Solo lo esencial
+- ✅ **Código consolidado** - Todo en un lugar
+- ✅ **Fácil mantenimiento** - Cambios centralizados
+- ✅ **Instalación simple** - Un solo comando
+- ✅ **Documentación clara** - Solo lo necesario
+
+### **Compatibilidad**
+- ✅ **Funcionalidad completa** - Nada se perdió
+- ✅ **Datos existentes** - Compatible con `queues/`
+- ✅ **Imágenes originales** - Disponibles en `assets/`
+- ✅ **Logs detallados** - Sistema de logging completo
+
+---
+
+**Nota**: Este proyecto está diseñado para uso interno de la empresa y requiere acceso específico al servidor SAP remoto. La versión consolidada mantiene toda la funcionalidad original con una estructura simplificada y mantenible.
