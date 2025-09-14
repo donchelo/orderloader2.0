@@ -1,0 +1,39 @@
+# OrderLoader Final - Archivos a ignorar
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Logs
+logs/
+*.log
+
+# Datos temporales
+data/pending/*.json
+data/completed/*.json
+!data/pending/.gitkeep
+!data/completed/.gitkeep
+
+# Archivos temporales
+*.tmp
+*.temp
+test_permissions.tmp
+
+# Configuraciones locales
+config_local.json
+
+# Screenshots
+screenshots/
+*.png
+*.jpg
+*.jpeg
+!assets/images/**/*.png
+!assets/images/**/*.jpg
+!assets/images/**/*.jpeg
+
+# Backups
+*.bak
+*.backup
+*_backup_*

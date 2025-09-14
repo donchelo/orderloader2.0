@@ -1,0 +1,9 @@
+# OrderLoader Final - Dependencias Mínimas
+# Solo las librerías esenciales
+
+pyautogui==0.9.54
+psutil==5.9.5
+
+# Notas:
+# - pyautogui: Automatización de interfaz (incluye pillow internamente)
+# - psutil: Gestión de procesos y ventanas

@@ -1,60 +1,49 @@
-# Logs
-*.log
-orderloader.log
+# OrderLoader 2.0 - Archivos a ignorar
 
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
 
-# Virtual environments
-venv/
-env/
-ENV/
-env.bak/
-venv.bak/
+# Logs
+*.log
+orderloader/logs/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# Datos temporales
+orderloader/data/pending/*.json
+orderloader/data/completed/*.json
+!orderloader/data/pending/.gitkeep
+!orderloader/data/completed/.gitkeep
 
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Temporary files
+# Archivos temporales
 *.tmp
 *.temp
-temp/
-tmp/
+test_permissions.tmp
 
-# Screenshots (opcional - descomenta si no quieres incluir capturas de pantalla)
-# *.png
-# *.jpg
-# *.jpeg
+# Configuraciones locales
+config_local.json
+
+# Screenshots
+screenshots/
+*.png
+*.jpg
+*.jpeg
+!assets/images/**/*.png
+!assets/images/**/*.jpg
+!assets/images/**/*.jpeg
+!orderloader/assets/images/**/*.png
+!orderloader/assets/images/**/*.jpg
+!orderloader/assets/images/**/*.jpeg
+
+# Backups
+*.bak
+*.backup
+*_backup_*
+
+# Archivos de test
+test_*.json
+test_*.tmp
+
+# Archivos de comparación
+Comparar/
