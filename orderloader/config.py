@@ -27,6 +27,20 @@ ALT_TAB_DELAY = 0.3
 STABILIZATION_WAIT = 3
 FILE_PROCESSING_WAIT = 2
 
+# Configuración de pyautogui
+PYAUTOGUI_PAUSE = 0.5
+PYAUTOGUI_FAILSAFE = True
+
+# Configuración de timeouts y delays
+WINDOW_ACTIVATION_DELAY = 1.0
+WINDOW_MAXIMIZE_DELAY = 1.0
+SAP_VERIFICATION_DELAY = 1.0
+FILE_PROCESSING_SIMULATION_DELAY = 2.0
+SYSTEM_STABILIZATION_DELAY = 3.0
+
+# Configuración de PowerShell
+POWERSHELL_TIMEOUT = 5
+
 # Configuración de archivos
 SUPPORTED_EXTENSIONS = ['.json']
 FILE_ENCODING = 'utf-8'
@@ -35,3 +49,57 @@ FILE_ENCODING = 'utf-8'
 LOG_LEVEL = 'INFO'
 LOG_FORMAT = '%(asctime)s - %(levelname)s - %(message)s'
 LOG_ENCODING = 'utf-8'
+
+# Configuración de retry logic
+RETRY_CONFIG = {
+    'max_attempts': 3,
+    'base_delay': 1.0,  # segundos
+    'max_delay': 10.0,  # segundos
+    'backoff_multiplier': 2.0,
+    'retryable_errors': [
+        'WINDOW_ACTIVATION_FAILED',
+        'WINDOW_MAXIMIZE_FAILED', 
+        'SAP_NOT_DETECTED',
+        'POWERSHELL_TIMEOUT',
+        'SUBPROCESS_FAILED'
+    ]
+}
+
+# Configuración de backup
+BACKUP_CONFIG = {
+    'enabled': True,
+    'backup_path': 'backups',
+    'max_backups': 10,
+    'compress_backups': True
+}
+
+# Configuración de métricas
+METRICS_CONFIG = {
+    'enabled': True,
+    'track_performance': True,
+    'track_success_rate': True,
+    'metrics_file': 'metrics.json'
+}
+
+# Códigos de error específicos
+class ErrorCodes:
+    """Códigos de error específicos del sistema"""
+    # Errores de sistema
+    SYSTEM_VALIDATION_FAILED = "SYS001"
+    PERMISSION_DENIED = "SYS002"
+    DIRECTORY_CREATION_FAILED = "SYS003"
+    
+    # Errores de ventana
+    WINDOW_ACTIVATION_FAILED = "WIN001"
+    WINDOW_MAXIMIZE_FAILED = "WIN002"
+    SAP_NOT_DETECTED = "WIN003"
+    
+    # Errores de archivos
+    FILE_NOT_FOUND = "FILE001"
+    JSON_VALIDATION_FAILED = "FILE002"
+    JSON_PROCESSING_FAILED = "FILE003"
+    FILE_MOVE_FAILED = "FILE004"
+    
+    # Errores de red/sistema
+    POWERSHELL_TIMEOUT = "NET001"
+    SUBPROCESS_FAILED = "NET002"

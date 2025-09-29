@@ -121,6 +121,74 @@ def test_queue_management():
         return False
 
 
+def test_system_validation():
+    """Test 5: Validación del sistema"""
+    print("🔍 Test 5: Validación del sistema...")
+    
+    try:
+        order_loader = OrderLoader()
+        
+        # Verificar que validate_system funciona
+        result = order_loader.validate_system()
+        assert isinstance(result, bool)
+        
+        print("✅ Validación del sistema funciona correctamente")
+        return True
+    except Exception as e:
+        print(f"❌ Error en validación del sistema: {e}")
+        return False
+
+
+def test_sap_environment_setup():
+    """Test 6: Configuración del entorno SAP"""
+    print("🖥️ Test 6: Configuración del entorno SAP...")
+    
+    try:
+        order_loader = OrderLoader()
+        
+        # Verificar que setup_sap_environment existe y es callable
+        assert hasattr(order_loader, 'setup_sap_environment')
+        assert callable(order_loader.setup_sap_environment)
+        
+        # Nota: No ejecutamos setup_sap_environment porque requiere SAP real
+        print("✅ Configuración del entorno SAP está disponible")
+        return True
+    except Exception as e:
+        print(f"❌ Error en configuración del entorno SAP: {e}")
+        return False
+
+
+def test_error_handling():
+    """Test 7: Manejo de errores"""
+    print("⚠️ Test 7: Manejo de errores...")
+    
+    try:
+        order_loader = OrderLoader()
+        
+        # Test con archivo inexistente
+        from pathlib import Path
+        fake_file = Path("archivo_inexistente.json")
+        result = order_loader.validate_json(fake_file)
+        assert result == False, "Debería fallar con archivo inexistente"
+        
+        # Test con JSON inválido
+        invalid_json = Path("data/pending/invalid.json")
+        invalid_json.parent.mkdir(parents=True, exist_ok=True)
+        invalid_json.write_text("{ invalid json }")
+        
+        result = order_loader.validate_json(invalid_json)
+        assert result == False, "Debería fallar con JSON inválido"
+        
+        # Limpiar
+        invalid_json.unlink(missing_ok=True)
+        
+        print("✅ Manejo de errores funciona correctamente")
+        return True
+    except Exception as e:
+        print(f"❌ Error en manejo de errores: {e}")
+        return False
+
+
 def run_all_tests():
     """Ejecutar todos los tests"""
     print("=" * 50)
@@ -133,7 +201,10 @@ def run_all_tests():
         test_system_initialization,
         test_directory_structure,
         test_json_processing,
-        test_queue_management
+        test_queue_management,
+        test_system_validation,
+        test_sap_environment_setup,
+        test_error_handling
     ]
     
     passed = 0
