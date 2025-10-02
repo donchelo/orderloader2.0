@@ -1,49 +1,88 @@
 # OrderLoader 2.0 - Archivos a ignorar
 
-# Python
+# ============================================
+# ENTORNO VIRTUAL
+# ============================================
+venv/
+env/
+ENV/
+.venv
+
+# ============================================
+# PYTHON
+# ============================================
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.egg
+*.egg-info/
+dist/
+build/
 
-# Logs
+# ============================================
+# LOGS Y MÉTRICAS
+# ============================================
 *.log
 orderloader/logs/
+orderloader/metrics.json
 
-# Datos temporales
+# ============================================
+# DATOS DE PROCESAMIENTO
+# ============================================
+# JSON de órdenes (solo mantener ejemplos)
 orderloader/data/pending/*.json
 orderloader/data/completed/*.json
 !orderloader/data/pending/.gitkeep
 !orderloader/data/completed/.gitkeep
+!orderloader/data/pending/test_orden_simple.json
 
-# Archivos temporales
-*.tmp
-*.temp
-test_permissions.tmp
-
-# Configuraciones locales
-config_local.json
-
-# Screenshots
-screenshots/
-*.png
-*.jpg
-*.jpeg
-!assets/images/**/*.png
-!assets/images/**/*.jpg
-!assets/images/**/*.jpeg
-!orderloader/assets/images/**/*.png
-!orderloader/assets/images/**/*.jpg
-!orderloader/assets/images/**/*.jpeg
-
-# Backups
+# ============================================
+# BACKUPS AUTOMÁTICOS
+# ============================================
+orderloader/backups/
 *.bak
 *.backup
 *_backup_*
 
-# Archivos de test
-test_*.json
-test_*.tmp
+# ============================================
+# SCREENSHOTS Y DEBUG
+# ============================================
+debug_*.png
+screenshot*.png
+screenshots/
 
-# Archivos de comparación
-Comparar/
+# Excepciones: mantener imágenes de referencia
+!orderloader/assets/images/**/*.png
+!orderloader/assets/images/**/*.jpg
+!orderloader/assets/images/**/*.jpeg
+
+# ============================================
+# ARCHIVOS TEMPORALES
+# ============================================
+*.tmp
+*.temp
+test_permissions.tmp
+
+# ============================================
+# CONFIGURACIONES LOCALES
+# ============================================
+config_local.py
+config_local.json
+.env
+
+# ============================================
+# IDE Y EDITORES
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ============================================
+# SISTEMA OPERATIVO
+# ============================================
+Thumbs.db
+desktop.ini
