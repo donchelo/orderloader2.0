@@ -10,6 +10,12 @@ import time
 import pyautogui
 import logging
 from pathlib import Path
+import io
+
+# Fix encoding para Windows
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace', line_buffering=True)
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace', line_buffering=True)
 
 # Importar configuración
 from config import (
@@ -57,7 +63,7 @@ def test_navegacion_completa():
     1. PowerShell está activo (ventana actual)
     2. Alt+Tab → activa Chrome/SAP
     3. Espera estabilización
-    4. Maximiza ventana
+    4. Asume ventana ya maximizada (sin Win+Up)
     5. Navega a Orden de Venta usando Computer Vision
     """
     print("=" * 70)
@@ -119,20 +125,20 @@ def test_navegacion_completa():
         logger.info("✅ Estabilizado")
         print()
 
-        # PASO 3: Maximizar ventana
-        print("=" * 70)
-        print("📍 PASO 3: Maximizar ventana")
-        print("=" * 70)
-        logger.info("📱 Presionando Win+Up...")
-        pyautogui.hotkey('win', 'up')
-        time.sleep(WINDOW_MAXIMIZE_DELAY)
-        logger.info("✅ Ventana maximizada")
-        time.sleep(1)  # Espera adicional
-        print()
+        # PASO 3: SKIPPED - Asumimos ventana ya maximizada
+        # print("=" * 70)
+        # print("📍 PASO 3: Maximizar ventana")
+        # print("=" * 70)
+        # logger.info("📱 Presionando Win+Up...")
+        # pyautogui.hotkey('win', 'up')
+        # time.sleep(WINDOW_MAXIMIZE_DELAY)
+        # logger.info("✅ Ventana maximizada")
+        # time.sleep(1)  # Espera adicional
+        # print()
 
-        # PASO 4: Inicializar SAPAutomation
+        # PASO 3: Inicializar SAPAutomation
         print("=" * 70)
-        print("📍 PASO 4: Inicializar Computer Vision")
+        print("📍 PASO 3: Inicializar Computer Vision")
         print("=" * 70)
         assets_path = PROJECT_ROOT / "assets" / "images" / "sap"
         logger.info(f"📂 Assets path: {assets_path}")
@@ -151,16 +157,16 @@ def test_navegacion_completa():
         logger.info("✅ SAPAutomation inicializado en MODO REAL")
         print()
 
-        # PASO 5: Tomar screenshot inicial
+        # PASO 4: Tomar screenshot inicial
         print("=" * 70)
-        print("📍 PASO 5: Screenshot inicial")
+        print("📍 PASO 4: Screenshot inicial")
         print("=" * 70)
         sap_automation.take_debug_screenshot("inicial")
         print()
 
-        # PASO 6: Navegar a Orden de Venta
+        # PASO 5: Navegar a Orden de Venta
         print("=" * 70)
-        print("📍 PASO 6: Navegación con Computer Vision")
+        print("📍 PASO 5: Navegación con Computer Vision")
         print("=" * 70)
         logger.info("🧭 Iniciando navegación a Orden de Venta...")
         print()

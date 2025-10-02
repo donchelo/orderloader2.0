@@ -32,6 +32,8 @@ class SAPAutomation:
         self.logger = logger
         self.assets_path = assets_path
         self.simulation_mode = simulation_mode
+        self.confidence = 0.8  # Confidence por defecto
+        self.timeout = 10  # Timeout por defecto
 
         # Configurar pyautogui
         pyautogui.FAILSAFE = True
@@ -149,19 +151,19 @@ class SAPAutomation:
         self.logger.info("🧭 Navegando a Orden de Venta...")
 
         # 1. Click en Módulos
-        if not self.find_and_click("navegacion/menu_modulos.png", timeout=5):
+        if not self.find_and_click("navegacion/menu_modulos.png", confidence=self.confidence, timeout=self.timeout):
             self.logger.error("❌ No se pudo abrir menú Módulos")
             return False
         time.sleep(1.5)
 
         # 2. Click en Ventas
-        if not self.find_and_click("navegacion/menu_ventas.png", timeout=5):
+        if not self.find_and_click("navegacion/menu_ventas.png", confidence=self.confidence, timeout=self.timeout):
             self.logger.error("❌ No se pudo abrir menú Ventas")
             return False
         time.sleep(1.5)
 
         # 3. Click en Orden de Venta
-        if not self.find_and_click("navegacion/boton_orden_venta.png", timeout=5):
+        if not self.find_and_click("navegacion/boton_orden_venta.png", confidence=self.confidence, timeout=self.timeout):
             self.logger.error("❌ No se pudo abrir Orden de Venta")
             return False
         time.sleep(2)  # Esperar que cargue el formulario
