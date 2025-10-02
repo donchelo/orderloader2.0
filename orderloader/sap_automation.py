@@ -149,19 +149,19 @@ class SAPAutomation:
         self.logger.info("🧭 Navegando a Orden de Venta...")
 
         # 1. Click en Módulos
-        if not self.find_and_click("sap_modulos_menu_button.png", timeout=5):
+        if not self.find_and_click("navegacion/menu_modulos.png", timeout=5):
             self.logger.error("❌ No se pudo abrir menú Módulos")
             return False
-        time.sleep(1)
+        time.sleep(1.5)
 
         # 2. Click en Ventas
-        if not self.find_and_click("sap_ventas_menu_button.png", timeout=5):
+        if not self.find_and_click("navegacion/menu_ventas.png", timeout=5):
             self.logger.error("❌ No se pudo abrir menú Ventas")
             return False
-        time.sleep(1)
+        time.sleep(1.5)
 
         # 3. Click en Orden de Venta
-        if not self.find_and_click("sap_ventas_order_button.png", timeout=5):
+        if not self.find_and_click("navegacion/boton_orden_venta.png", timeout=5):
             self.logger.error("❌ No se pudo abrir Orden de Venta")
             return False
         time.sleep(2)  # Esperar que cargue el formulario

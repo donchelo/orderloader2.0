@@ -989,9 +989,12 @@ NOTA: Asegúrate de que la ventana de SAP en Chrome esté abierta
         
         # Mostrar estado
         order_loader.print_status()
-        
+
         # Confirmar inicio
-        input("\nPresiona Enter para iniciar...")
+        try:
+            input("\nPresiona Enter para iniciar...")
+        except (EOFError, KeyboardInterrupt):
+            pass
         print()
         
         # Ejecutar automatización
@@ -1011,10 +1014,13 @@ NOTA: Asegúrate de que la ventana de SAP en Chrome esté abierta
         
     except Exception as e:
         print(f"\n❌ Error inesperado: {e}")
-    
+
     finally:
         print("\nPresiona Enter para salir...")
-        input()
+        try:
+            input()
+        except (EOFError, KeyboardInterrupt):
+            pass
 
 
 if __name__ == "__main__":
