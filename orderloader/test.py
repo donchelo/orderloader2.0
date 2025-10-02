@@ -7,18 +7,12 @@ Verificar funcionalidad básica
 
 import sys
 import json
-import io
 from pathlib import Path
-
-# Fix encoding for Windows console
-if sys.platform == 'win32':
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 try:
     from main import OrderLoader
 except ImportError as e:
-    print(f"❌ Error importando OrderLoader: {e}")
+    print(f"Error importando OrderLoader: {e}")
     sys.exit(1)
 
 
@@ -252,5 +246,8 @@ if __name__ == "__main__":
     else:
         print("1. 🔧 Corrige los errores mostrados arriba")
         print("2. 🔄 Ejecuta este test nuevamente")
-    
-    input("\nPresiona Enter para salir...")
+
+    try:
+        input("\nPresiona Enter para salir...")
+    except (EOFError, KeyboardInterrupt):
+        pass
