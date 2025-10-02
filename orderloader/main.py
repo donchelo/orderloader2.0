@@ -5,6 +5,8 @@ OrderLoader - Sistema Simple y Funcional
 Una sola clase, una sola forma de ejecutar
 """
 
+import sys
+import io
 import json
 import time
 import shutil
@@ -18,6 +20,12 @@ from typing import Optional, Dict, Any, List, Callable
 
 import pyautogui
 from config import *
+from sap_automation import SAPAutomation
+
+# Fix encoding for Windows console
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 # Configuración simple
 PROJECT_ROOT = Path(__file__).parent
@@ -270,11 +278,20 @@ class WindowManager:
 
 class FileProcessor:
     """Procesador de archivos JSON"""
-    
+
     def __init__(self, logger, metrics):
         self.logger = logger
         self.metrics = metrics
         self.backup_path = PROJECT_ROOT / BACKUP_CONFIG['backup_path']
+
+        # Inicializar automatización SAP
+        assets_path = PROJECT_ROOT / "assets" / "images" / "sap"
+        simulation_mode = SAP_AUTOMATION_CONFIG['simulation_mode']
+        self.sap_automation = SAPAutomation(
+            logger=logger,
+            assets_path=assets_path,
+            simulation_mode=simulation_mode
+        )
     
     def create_backup(self, file_path: Path) -> bool:
         """
@@ -375,41 +392,47 @@ class FileProcessor:
     def process_json(self, file_path: Path) -> bool:
         """
         Procesar archivo JSON de orden de compra.
-        
-        Lee el archivo, muestra información de la orden y simula el procesamiento.
+
+        Lee el archivo, muestra información de la orden y procesa en SAP.
         Incluye backup automático y métricas de rendimiento.
-        
+
         Args:
             file_path (Path): Ruta al archivo JSON a procesar.
-            
+
         Returns:
             bool: True si el procesamiento fue exitoso, False en caso contrario.
         """
         start_time = time.time()
         self.logger.info(f"📄 Procesando: {file_path.name}")
-        
+
         try:
             # Crear backup antes de procesar
             if not self.create_backup(file_path):
                 self.logger.warning("⚠️ No se pudo crear backup, continuando...")
-            
+
             with open(file_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-            
+
+            # Mostrar información de la orden
             self.logger.info(f"📋 Orden: {data.get('orden_compra', 'N/A')}")
             self.logger.info(f"📅 Fecha: {data.get('fecha_documento', 'N/A')}")
             self.logger.info(f"🏢 Comprador: {data.get('comprador', {}).get('nombre', 'N/A')}")
             self.logger.info(f"💰 Total: {data.get('valor_total', 'N/A')}")
             self.logger.info(f"📦 Items: {len(data.get('items', []))}")
-            
-            time.sleep(FILE_PROCESSING_SIMULATION_DELAY)  # Simular procesamiento
-            
-            # Registrar métricas de éxito
+
+            # Procesar orden en SAP usando Computer Vision
+            success = self.sap_automation.process_order(data)
+
+            # Registrar métricas
             duration = time.time() - start_time
-            self.metrics.record_file_processed(True, file_path.name, duration)
-            
-            self.logger.info(f"✅ Procesado: {file_path.name} (en {duration:.2f}s)")
-            return True
+            self.metrics.record_file_processed(success, file_path.name, duration)
+
+            if success:
+                self.logger.info(f"✅ Procesado: {file_path.name} (en {duration:.2f}s)")
+            else:
+                self.logger.error(f"❌ Error procesando: {file_path.name}")
+
+            return success
             
         except FileNotFoundError:
             duration = time.time() - start_time

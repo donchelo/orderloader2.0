@@ -81,6 +81,15 @@ METRICS_CONFIG = {
     'metrics_file': 'metrics.json'
 }
 
+# Configuración de automatización SAP
+SAP_AUTOMATION_CONFIG = {
+    'simulation_mode': True,  # True = simular, False = automatización real
+    'confidence': 0.8,  # Nivel de confianza para detección de imágenes (0.0 - 1.0)
+    'search_timeout': 10,  # Timeout de búsqueda de imágenes en segundos
+    'type_interval': 0.05,  # Intervalo entre teclas al escribir
+    'action_delay': 0.5,  # Delay entre acciones en segundos
+}
+
 # Códigos de error específicos
 class ErrorCodes:
     """Códigos de error específicos del sistema"""
