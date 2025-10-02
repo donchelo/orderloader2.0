@@ -566,20 +566,20 @@ class OrderLoader:
     def __init__(self):
         """
         Inicializar sistema OrderLoader.
-        
+
         Configura logging, crea directorios necesarios y prepara el sistema
         para el procesamiento de archivos JSON.
         """
         self.setup_logging()
+        self.backup_path = PROJECT_ROOT / BACKUP_CONFIG['backup_path']
         self.setup_directories()
         self.metrics = MetricsCollector()
-        self.backup_path = PROJECT_ROOT / BACKUP_CONFIG['backup_path']
-        
+
         # Inicializar componentes especializados
         self.window_manager = WindowManager(self.logger)
         self.file_processor = FileProcessor(self.logger, self.metrics)
         self.queue_manager = QueueManager(self.logger, self.file_processor)
-        
+
         self.logger.info("🚀 OrderLoader iniciado")
     
     def setup_logging(self):
@@ -608,12 +608,14 @@ class OrderLoader:
     def setup_directories(self):
         """
         Crear directorios necesarios para el funcionamiento del sistema.
-        
+
         Crea los directorios:
         - data/pending/ (archivos JSON pendientes de procesar)
         - data/completed/ (archivos JSON ya procesados)
+        - backups/ (para backups automáticos)
+        - logs/ (para archivos de log)
         """
-        for directory in [PENDING_PATH, COMPLETED_PATH, self.backup_path]:
+        for directory in [PENDING_PATH, COMPLETED_PATH, self.backup_path, LOGS_PATH]:
             directory.mkdir(parents=True, exist_ok=True)
         self.logger.info("📁 Directorios configurados")
     
@@ -800,7 +802,7 @@ class OrderLoader:
     def get_queue_status(self) -> Dict[str, int]:
         """
         Obtener estado actual de las colas de procesamiento.
-        
+
         Returns:
             Dict[str, int]: Diccionario con:
                 - pending: Número de archivos pendientes
@@ -808,14 +810,35 @@ class OrderLoader:
                 - total: Total de archivos procesados
         """
         return self.queue_manager.get_queue_status()
-    
+
     def print_status(self):
         """
         Imprimir estado actual del sistema en consola.
-        
+
         Muestra número de archivos pendientes, completados y total.
         """
         self.queue_manager.print_status()
+
+    def get_pending_files(self) -> List[Path]:
+        """
+        Obtener lista de archivos JSON pendientes de procesar.
+        Delegado a QueueManager.
+        """
+        return self.queue_manager.get_pending_files()
+
+    def validate_json(self, file_path: Path) -> bool:
+        """
+        Validar estructura y contenido de archivo JSON.
+        Delegado a FileProcessor.
+        """
+        return self.file_processor.validate_json(file_path)
+
+    def process_json(self, file_path: Path) -> bool:
+        """
+        Procesar archivo JSON de orden de compra.
+        Delegado a FileProcessor.
+        """
+        return self.file_processor.process_json(file_path)
     
     def validate_system(self) -> bool:
         """

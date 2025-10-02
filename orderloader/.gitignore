@@ -6,6 +6,12 @@ __pycache__/
 *$py.class
 *.so
 
+# Virtual Environment
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+
 # Logs
 logs/
 *.log
@@ -16,10 +22,17 @@ data/completed/*.json
 !data/pending/.gitkeep
 !data/completed/.gitkeep
 
+# Backups
+backups/
+
 # Archivos temporales
 *.tmp
 *.temp
 test_permissions.tmp
+nul
+
+# Métricas
+metrics.json
 
 # Configuraciones locales
 config_local.json
@@ -33,7 +46,7 @@ screenshots/
 !assets/images/**/*.jpg
 !assets/images/**/*.jpeg
 
-# Backups
+# Backups antiguos
 *.bak
 *.backup
 *_backup_*
