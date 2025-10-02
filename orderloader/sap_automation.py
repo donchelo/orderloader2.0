@@ -162,8 +162,8 @@ class SAPAutomation:
             return False
         time.sleep(1.5)
 
-        # 3. Click en Orden de Venta
-        if not self.find_and_click("navegacion/boton_orden_venta.png", confidence=self.confidence, timeout=self.timeout):
+        # 3. Click en Orden de Venta (confidence más alto para evitar confusión con "Oferta de Ventas")
+        if not self.find_and_click("navegacion/boton_orden_venta.png", confidence=0.85, timeout=self.timeout):
             self.logger.error("❌ No se pudo abrir Orden de Venta")
             return False
         time.sleep(2)  # Esperar que cargue el formulario
